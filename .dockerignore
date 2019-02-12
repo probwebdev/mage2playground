@@ -1,0 +1,15 @@
+# Docker
+docker/
+docker*.yml
+
+# Git
+.gitignore
+.git/
+
+# composer.phar
+vendor/
+composer.*
+
+# IDE
+.idea/
+.vscode/

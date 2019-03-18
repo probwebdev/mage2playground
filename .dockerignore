@@ -1,15 +1,26 @@
 # Docker
+Dockerfile
 docker/
 docker*.yml
 
 # Git
 .gitignore
 .git/
+.github/
 
 # composer.phar
-vendor/
-composer.*
+composer.phar
 
 # IDE
 .idea/
 .vscode/
+
+# Project
+dev/
+node_modules
+auth.json
+.editorconfig
+.travis.yml
+*.sample
+*.dist
+*.cache

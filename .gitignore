@@ -73,6 +73,7 @@ atlassian*
 /grunt-config.json.sample
 /nginx.conf.sample
 /.htaccess.sample
+/auth.json
 /auth.json.sample
 /package.json.sample
 /.php_cs.dist

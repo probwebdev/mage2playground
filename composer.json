@@ -15,8 +15,7 @@
     "magento/product-community-edition": "~2.3.0",
     "divanteltd/vue-storefront": "~1.8.0",
     "divanteltd/vue-storefront-api": "~1.8.0",
-    "divanteltd/mage2vuestorefront": "~1.8.0",
-    "magento-research/pwa-studio": "~2.0.0-RC"
+    "divanteltd/mage2vuestorefront": "~1.8.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "~2.13.0",
@@ -73,7 +72,7 @@
       "type": "package",
       "package": {
         "name": "divanteltd/vue-storefront",
-        "version": "v1.8.2",
+        "version": "v1.8.3",
         "source": {
           "url": "https://github.com/DivanteLtd/vue-storefront.git",
           "type": "git",
@@ -85,7 +84,7 @@
       "type": "package",
       "package": {
         "name": "divanteltd/vue-storefront-api",
-        "version": "v1.8.1",
+        "version": "v1.8.2",
         "source": {
           "url": "https://github.com/DivanteLtd/vue-storefront-api.git",
           "type": "git",
@@ -97,7 +96,7 @@
       "type": "package",
       "package": {
         "name": "divanteltd/mage2vuestorefront",
-        "version": "v1.8.0",
+        "version": "v1.8.2",
         "source": {
           "url": "https://github.com/DivanteLtd/mage2vuestorefront.git",
           "type": "git",
@@ -109,11 +108,11 @@
       "type": "package",
       "package": {
         "name": "magento-research/pwa-studio",
-        "version": "v2.0.0-rc.19",
+        "version": "v2.0",
         "source": {
           "url": "https://github.com/magento-research/pwa-studio.git",
           "type": "git",
-          "reference": "release/2.0"
+          "reference": "develop"
         }
       }
     }

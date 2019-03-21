@@ -11,13 +11,29 @@ FROM php:$PHP_VER
 WORKDIR /var/www/html
 
 RUN apk add --update && \
-    apk add --no-cache --virtual .build-deps freetype-dev libpng-dev libjpeg-turbo-dev \
-      libzip-dev libxslt-dev icu-dev zlib-dev  && \
-    apk add --no-cache --virtual .runtime-deps curl git freetype libpng libjpeg-turbo icu-libs libxslt libzip && \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ \
+    apk add --no-cache --virtual .build-deps \
+      freetype-dev \
+      libpng-dev \
+      libjpeg-turbo-dev \
+      libzip-dev \
+      libxslt-dev \
+      icu-dev \
+      zlib-dev  && \
+    apk add --no-cache --virtual .runtime-deps \
+      curl \
+      git \
+      freetype \
+      libpng \
+      libjpeg-turbo \
+      icu-libs \
+      libxslt \
+      libzip && \
+    docker-php-ext-configure gd \
+      --with-freetype-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include \
       --with-png-dir=/usr/include && \
-    docker-php-ext-configure zip --with-libzip && \
+    docker-php-ext-configure zip \
+      --with-libzip && \
     docker-php-ext-install \
       zip \
       gd \
@@ -27,14 +43,15 @@ RUN apk add --update && \
       bcmath \
       soap \
       intl && \
-    apk del .build-deps
+    apk del --no-network .build-deps
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
 
 RUN --mount=type=secret,id=auth_json,dst=/var/www/html/auth.json,required composer install && \
-    composer clear-cache
+    composer clear-cache && \
+    chmod u+x bin/magento
 
-USER www-data
+EXPOSE 9000
 
-EXPOSE 80
+CMD ["php-fpm"]

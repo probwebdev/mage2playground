@@ -5,13 +5,18 @@ ARG COMPOSER_VER=1.8
 # Composer
 FROM composer:$COMPOSER_VER as composer
 
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+
+RUN --mount=type=secret,id=auth_json,dst=/app/auth.json,required composer install --ignore-platform-reqs
+
 # Mage 2 Stage
 FROM php:$PHP_VER
 
 WORKDIR /var/www/html
 
-RUN apk add --update && \
-    apk add --no-cache --virtual .build-deps \
+RUN apk add --no-cache --virtual .build-deps \
       freetype-dev \
       libpng-dev \
       libjpeg-turbo-dev \
@@ -20,7 +25,6 @@ RUN apk add --update && \
       icu-dev \
       zlib-dev  && \
     apk add --no-cache --virtual .runtime-deps \
-      curl \
       git \
       freetype \
       libpng \
@@ -46,11 +50,7 @@ RUN apk add --update && \
     apk del --no-network .build-deps
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-COPY composer.json composer.lock ./
-
-RUN --mount=type=secret,id=auth_json,dst=/var/www/html/auth.json,required composer install && \
-    composer clear-cache && \
-    chmod u+x bin/magento
+COPY --from=composer /app ./
 
 EXPOSE 9000
 

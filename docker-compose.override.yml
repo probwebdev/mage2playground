@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+
+  db:
+    ports:
+      - ${DB_PORT}:3306
+
+  mage2:
+    build:
+      context: .
+      args:
+        - COMPOSER_VER=${COMPOSER_VER}
+        - PHP_VER=${PHP_VER}
+        - REDIS_VER=${REDIS_VER}
+        - XDEBUG_VER=${XDEBUG_VER}

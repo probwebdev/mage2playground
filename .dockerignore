@@ -1,6 +1,5 @@
 # Docker
 Dockerfile
-docker/
 docker*.yml
 
 # Git

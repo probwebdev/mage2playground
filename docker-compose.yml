@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+
+  nginx:
+    image: nginx:${NGINX_VER}
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - mage2data:/var/www/html
+      - ./docker/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - mage2
+    restart: always
+
+  db:
+    image: mariadb:${DB_VER}
+    volumes:
+      - mariadb:/var/lib/mysql
+    ports:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_USER_PASSWORD}
+    restart: always
+
+  mage2:
+    image: ${MAGE2_IMAGE}
+    depends_on:
+      - db
+    ports:
+      - 9000
+    volumes:
+      - ./auth.json:/var/www/html/auth.json
+      - mage2data:/var/www/html
+
+volumes:
+  mage2data:
+  mariadb:
+    external: true

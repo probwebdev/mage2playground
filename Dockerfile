@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1.0-experimental
 ARG COMPOSER_VER=1.8
-ARG PHP_VER=7.2-fpm-alpine
+ARG PHP_FPM_VER=7.2-fpm-alpine
 
 # Composer
 FROM composer:$COMPOSER_VER as composer
@@ -12,7 +12,7 @@ COPY composer.json composer.lock ./
 RUN --mount=type=secret,id=auth_json,dst=/app/auth.json,required composer install --ignore-platform-reqs
 
 # Mage 2 Stage
-FROM php:$PHP_VER
+FROM php:$PHP_FPM_VER
 
 ARG REDIS_VER=4.3.0
 ARG XDEBUG_VER=2.7.0
@@ -55,16 +55,24 @@ RUN apk add --no-cache --virtual .build-deps \
       soap \
       intl && \
     pecl install redis-$REDIS_VER && \
+    pecl install xdebug-$XDEBUG_VER && \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
 
+COPY docker/mage2/etc /usr/local/etc/
+COPY docker/mage2/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=composer /app ./
 
-COPY docker/mage2/etc /usr/local/etc/
+ENV PHP_MEMORY_LIMIT 2G
+ENV PHP_ENABLE_XDEBUG false
+ENV UPLOAD_MAX_FILESIZE 64M
+ENV MAGENTO_ROOT /var/www/html
+ENV MAGENTO_RUN_MODE developer
+ENV DEBUG false
 
-RUN mkdir /var/log/php-fpm
+ENTRYPOINT ["docker-entrypoint"]
 
 EXPOSE 9000
 
-CMD ["php-fpm", "-R"]
+CMD ["php-fpm"]

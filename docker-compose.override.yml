@@ -11,6 +11,6 @@ services:
       context: .
       args:
         - COMPOSER_VER=${COMPOSER_VER}
-        - PHP_VER=${PHP_VER}
+        - PHP_FPM_VER=${PHP_FPM_VER}
         - REDIS_VER=${REDIS_VER}
         - XDEBUG_VER=${XDEBUG_VER}

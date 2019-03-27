@@ -2,9 +2,9 @@ version: "3"
 
 services:
 
-  db:
-    ports:
-      - ${DB_PORT}:3306
+  varnish:
+    build:
+      context: ./docker/varnish
 
   mage2:
     build:

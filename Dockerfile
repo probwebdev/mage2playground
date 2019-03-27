@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1.0-experimental
 ARG COMPOSER_VER=1.8
-ARG PHP_FPM_VER=7.2-fpm-alpine
+ARG PHP_SERVER_VER=7.2-fpm-alpine
 
 # Composer
 FROM composer:$COMPOSER_VER as composer
@@ -12,7 +12,7 @@ COPY composer.json composer.lock ./
 RUN --mount=type=secret,id=auth_json,dst=/app/auth.json,required composer install --ignore-platform-reqs
 
 # Mage 2 Stage
-FROM php:$PHP_FPM_VER
+FROM php:$PHP_SERVER_VER
 
 ARG REDIS_VER=4.3.0
 ARG XDEBUG_VER=2.7.0
@@ -30,9 +30,7 @@ RUN apk add --no-cache --virtual .build-deps \
       icu-dev \
       zlib-dev && \
     apk add --no-cache --virtual .runtime-deps \
-      git \
       bash \
-      mariadb-client \
       freetype \
       libpng \
       libjpeg-turbo \

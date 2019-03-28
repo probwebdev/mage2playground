@@ -60,7 +60,7 @@ RUN apk add --no-cache --virtual .build-deps \
 COPY docker/mage2/etc /usr/local/etc/
 COPY docker/mage2/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-COPY --from=composer /app ./
+COPY --from=composer --chown=www-data:www-data /app ./
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_ENABLE_XDEBUG false

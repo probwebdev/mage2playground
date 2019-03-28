@@ -9,7 +9,7 @@ RUN apt-get update && \
 
 ENV VARNISH_CONFIG /etc/varnish/default.vcl
 ENV VARNISH_CACHE_SIZE 256m
-ENV VARNISH_PARAMS -p default_ttl=3600 -p default_grace=3600 -p http_resp_hdr_len=65536 -p http_resp_size=98304
+ENV VARNISH_PARAMS -p default_ttl=3600 -p default_grace=3600
 
 EXPOSE 80
 

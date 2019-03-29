@@ -1,0 +1,32 @@
+#!/bin/bash
+
+[ "$DEBUG" = "true" ] && set -x
+
+# Ensure our Magento directory exists
+mkdir -p $MAGENTO_ROOT
+
+MAGE2CMD="mage2cmd"
+
+if [ -n "$MAGE2_PARAMS" ]; then
+    echo "Mage2 Installation Started..."
+
+    if [ "MAGE2_USE_SAMPLE_DATA" = "true" ]; then
+        $MAGENTO_COMMAND sampledata:deploy
+        MAGE2_PARAMS="$MAGE2_PARAMS --use-sample-data"
+    fi
+
+    $MAGE2CMD setup:install $MAGE2_PARAMS
+
+    if [ "$MAGE2_VARNISH_FPC" = "true" ]; then
+        $MAGE2CMD config:set --scope=default --scope-code=0 system/full_page_cache/caching_application 2
+        $MAGE2CMD setup:config:set --http-cache-hosts=varnish
+    fi
+
+    $MAGE2CMD setup:di:compile
+    $MAGE2CMD setup:static-content:deploy -f
+    $MAGE2CMD cache:flush
+
+    echo "Mage2 Installation Complete!"
+else
+    echo "Skipping Mage2 Installation..."
+fi

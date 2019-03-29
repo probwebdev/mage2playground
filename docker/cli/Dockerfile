@@ -1,4 +1,3 @@
-# syntax = docker/dockerfile:1.0-experimental
 ARG COMPOSER_VER=1.8
 ARG PHP_CLI_VER=7.2-cli-alpine
 
@@ -9,8 +8,6 @@ FROM composer:$COMPOSER_VER as composer
 FROM php:$PHP_CLI_VER
 
 ARG REDIS_VER=4.3.0
-
-WORKDIR /var/www/html
 
 RUN apk add --no-cache --virtual .build-deps \
       build-base \
@@ -25,6 +22,7 @@ RUN apk add --no-cache --virtual .build-deps \
     apk add --no-cache --virtual .runtime-deps \
       mariadb-client \
       git \
+      sudo \
       bash \
       freetype \
       libpng \
@@ -51,18 +49,21 @@ RUN apk add --no-cache --virtual .build-deps \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
 
+VOLUME /root/.composer/cache
+
+WORKDIR /var/www/html
+
 COPY docker/cli/etc /usr/local/etc/
-COPY docker/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY docker/cli/bin /usr/local/bin/
+COPY docker/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-ENV PHP_MEMORY_LIMIT 2G
-ENV PHP_ENABLE_XDEBUG false
-ENV UPLOAD_MAX_FILESIZE 64M
+RUN chmod +x /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/mage2*
+
 ENV MAGENTO_ROOT /var/www/html
-ENV MAGENTO_RUN_MODE developer
 ENV DEBUG false
 
 ENTRYPOINT ["docker-entrypoint"]
 
-CMD ["php", "-a"]
+CMD ["/bin/bash", "-c"]

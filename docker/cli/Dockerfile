@@ -7,7 +7,7 @@ FROM composer:$COMPOSER_VER as composer
 # Mage 2 Stage
 FROM php:$PHP_CLI_VER
 
-ARG REDIS_VER=4.3.0
+ARG PHP_REDIS_VER=4.3.0
 
 WORKDIR /var/www/html
 
@@ -47,7 +47,7 @@ RUN apk add --no-cache --virtual .build-deps \
       bcmath \
       soap \
       intl && \
-    pecl install redis-$REDIS_VER && \
+    pecl install redis-$PHP_REDIS_VER && \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
 

@@ -2,8 +2,8 @@ ARG PHP_SERVER_VER=7.2-fpm-alpine
 
 FROM php:$PHP_SERVER_VER
 
-ARG REDIS_VER=4.3.0
-ARG XDEBUG_VER=2.7.0
+ARG PHP_REDIS_VER=4.3.0
+ARG PHP_XDEBUG_VER=2.7.0
 
 WORKDIR /var/www/html
 
@@ -40,8 +40,8 @@ RUN apk add --no-cache --virtual .build-deps \
       bcmath \
       soap \
       intl && \
-    pecl install redis-$REDIS_VER && \
-    pecl install xdebug-$XDEBUG_VER && \
+    pecl install redis-$PHP_REDIS_VER && \
+    pecl install xdebug-$PHP_XDEBUG_VER && \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
 

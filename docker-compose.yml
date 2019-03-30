@@ -36,6 +36,14 @@ services:
       MYSQL_PASSWORD: ${DB_USER_PASSWORD}
     restart: always
 
+  redis:
+    image: redis:${REDIS_VER}
+    depends_on:
+      - db
+    ports:
+      - 6379
+    restart: always
+
   mage2:
     image: ${MAGE2_IMAGE}
     depends_on:
@@ -50,6 +58,7 @@ services:
     image: ${MAGE2CLI_IMAGE}
     depends_on:
       - db
+      - redis
     volumes:
       - mage2data:/var/www/html
       - ./auth.json:/var/www/html/auth.json

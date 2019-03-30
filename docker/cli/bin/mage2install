@@ -9,30 +9,44 @@ if [[ -f ${MAGENTO_ROOT}/auth.json ]]; then
     COMPOSER_AUTH=$(cat ${MAGENTO_ROOT}/auth.json)
 fi
 
-if [[ -n "${MAGE2_PARAMS}" ]]; then
+if [[ -n "${MAGE2_INSTALL_PARAMS}" ]]; then
     echo "Run Composer install..."
     composer install
     echo "Composer installation complete!"
     chmod u+x bin/magento
 
     # Use separate regexp's to eliminate unexpected behaviour
-    MAGE2_PARAMS=$(sed -E -e "s/^[\"\']//" -e "s/[\"\']$//" <<< ${MAGE2_PARAMS})
+    MAGE2_INSTALL_PARAMS=$(sed -E -e "s/^[\"\']//" -e "s/[\"\']$//" <<< ${MAGE2_INSTALL_PARAMS})
 
     if [[ "${MAGE2_USE_SAMPLE_DATA}" = "true" ]]; then
         echo "Deploy Sample Data..."
         magento sampledata:deploy
-        MAGE2_PARAMS="${MAGE2_PARAMS} --use-sample-data"
+        MAGE2_INSTALL_PARAMS="${MAGE2_INSTALL_PARAMS} --use-sample-data"
     fi
 
     echo "Mage2 installation started..."
-    INSTALL_CMD="magento setup:install ${MAGE2_PARAMS}"
+    INSTALL_CMD="magento setup:install ${MAGE2_INSTALL_PARAMS}"
 
     ${INSTALL_CMD}
 
     if [[ "${MAGE2_VARNISH_FPC}" = "true" ]]; then
-        magento config:set --scope=default --scope-code=0 system/full_page_cache/caching_application 2 --no-interaction
-        magento setup:config:set --http-cache-hosts=varnish --no-interaction
+        magento config:set --scope=default --scope-code=0 system/full_page_cache/caching_application 2
+        magento setup:config:set --http-cache-hosts=varnish
     fi
+
+     echo "Configure Redis..."
+     magento setup:config:set --cache-backend=redis \
+        --cache-backend-redis-server=redis \
+        --cache-backend-redis-db=0
+
+     magento setup:config:set --page-cache=redis \
+        --page-cache-redis-server=redis \
+        --page-cache-redis-db=1
+
+     magento setup:config:set --session-save=redis \
+        --session-save-redis-host=redis \
+        --session-save-redis-log-level=3 \
+        --session-save-redis-db=2
 
     echo "Update permissions..."
     find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +

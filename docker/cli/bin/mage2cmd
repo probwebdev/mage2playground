@@ -1,7 +1,0 @@
-#!/bin/bash
-
-[ "$DEBUG" = "true" ] && set -x
-
-MAGE2CMD="$MAGENTO_ROOT/bin/magento"
-
-sudo -u www-data -- $MAGE2CMD "$@"

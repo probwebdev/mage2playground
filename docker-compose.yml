@@ -49,14 +49,11 @@ services:
   cli:
     image: ${MAGE2CLI_IMAGE}
     depends_on:
+      - db
       - mage2
     volumes:
       - ./auth.json:/var/www/html/auth.json
       - mage2data:/var/www/html
-    environment:
-      MAGE2_PARAMS: ${MAGE2_PARAMS}
-      MAGE2_USE_SAMPLE_DATA: ${MAGE2_USE_SAMPLE_DATA}
-      MAGE2_VARNISH_FPC: ${MAGE2_VARNISH_FPC}
 
 volumes:
   mage2data:

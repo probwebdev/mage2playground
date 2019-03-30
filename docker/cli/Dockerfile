@@ -9,6 +9,8 @@ FROM php:$PHP_CLI_VER
 
 ARG REDIS_VER=4.3.0
 
+WORKDIR /var/www/html
+
 RUN apk add --no-cache --virtual .build-deps \
       build-base \
       autoconf \
@@ -49,21 +51,22 @@ RUN apk add --no-cache --virtual .build-deps \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
 
-VOLUME /root/.composer/cache
-
-WORKDIR /var/www/html
-
 COPY docker/cli/etc /usr/local/etc/
 COPY docker/cli/bin /usr/local/bin/
 COPY docker/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 && chmod +x /usr/local/bin/n98-magerun2
+
 RUN chmod +x /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/mage2*
+RUN chmod +x /usr/local/bin/mage2install
 
 ENV MAGENTO_ROOT /var/www/html
+ENV PATH ${MAGENTO_ROOT}/bin:${PATH}
 ENV DEBUG false
+
+USER www-data
 
 ENTRYPOINT ["docker-entrypoint"]
 
-CMD ["/bin/bash", "-c"]
+CMD ["/bin/bash"]

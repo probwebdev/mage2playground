@@ -43,17 +43,16 @@ services:
     ports:
       - 9000
     volumes:
-      - ./auth.json:/var/www/html/auth.json
       - mage2data:/var/www/html
+      - ./auth.json:/var/www/html/auth.json
 
   cli:
     image: ${MAGE2CLI_IMAGE}
     depends_on:
       - db
-      - mage2
     volumes:
-      - ./auth.json:/var/www/html/auth.json
       - mage2data:/var/www/html
+      - ./auth.json:/var/www/html/auth.json
 
 volumes:
   mage2data:

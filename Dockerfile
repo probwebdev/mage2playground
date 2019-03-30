@@ -1,17 +1,5 @@
-# syntax = docker/dockerfile:1.0-experimental
-ARG COMPOSER_VER=1.8
 ARG PHP_SERVER_VER=7.2-fpm-alpine
 
-# Composer
-FROM composer:$COMPOSER_VER as composer
-
-WORKDIR /app
-
-COPY composer.json composer.lock ./
-
-RUN --mount=type=secret,id=auth_json,dst=/app/auth.json,required composer install --ignore-platform-reqs
-
-# Mage 2 Stage
 FROM php:$PHP_SERVER_VER
 
 ARG REDIS_VER=4.3.0
@@ -59,7 +47,6 @@ RUN apk add --no-cache --virtual .build-deps \
 
 COPY docker/mage2/etc /usr/local/etc/
 COPY docker/mage2/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY --from=composer --chown=www-data:www-data /app ./
 
 RUN chmod +x /usr/local/bin/docker-entrypoint
 

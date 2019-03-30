@@ -10,7 +10,6 @@ services:
     build:
       context: .
       args:
-        - COMPOSER_VER=${COMPOSER_VER}
         - PHP_SERVER_VER=${PHP_SERVER_VER}
         - REDIS_VER=${REDIS_VER}
         - XDEBUG_VER=${XDEBUG_VER}

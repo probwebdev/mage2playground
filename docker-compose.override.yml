@@ -6,6 +6,11 @@ services:
     ports:
       - ${DB_PORT}:3306
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_VER}
+    ports:
+      - ${ES_PORT}:9200
+
   mage2:
     build:
       context: .

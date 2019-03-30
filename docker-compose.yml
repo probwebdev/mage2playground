@@ -44,6 +44,18 @@ services:
       - 6379
     restart: always
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_VER}
+    depends_on:
+      - db
+    ports:
+      - 9200
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+
   mage2:
     image: ${MAGE2_IMAGE}
     depends_on:
@@ -65,5 +77,6 @@ services:
 
 volumes:
   mage2data:
+  esdata:
   mariadb:
     external: true

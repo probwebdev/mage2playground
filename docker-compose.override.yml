@@ -6,11 +6,12 @@ services:
     ports:
       - ${DB_PORT}:3306
 
-  mage2:
-    build:
-      context: .
-      args:
-        - COMPOSER_VER=${COMPOSER_VER}
-        - PHP_SERVER_VER=${PHP_SERVER_VER}
-        - REDIS_VER=${REDIS_VER}
-        - XDEBUG_VER=${XDEBUG_VER}
+  elasticsearch:
+    ports:
+      - ${ES_PORT}:9200
+
+  cli:
+    environment:
+      MAGE2_INSTALL_PARAMS: ${MAGE2_INSTALL_PARAMS}
+      MAGE2_USE_SAMPLE_DATA: ${MAGE2_USE_SAMPLE_DATA}
+      MAGE2_VARNISH_FPC: ${MAGE2_VARNISH_FPC}

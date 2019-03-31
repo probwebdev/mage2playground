@@ -1,9 +1,13 @@
-ARG PHP_SERVER_VER=7.2-fpm-alpine
+ARG COMPOSER_VER=1.8
+ARG PHP_CLI_VER=7.2-cli-alpine
 
-FROM php:$PHP_SERVER_VER
+# Composer
+FROM composer:$COMPOSER_VER as composer
+
+# Mage 2 Stage
+FROM php:$PHP_CLI_VER
 
 ARG PHP_REDIS_VER=4.3.0
-ARG PHP_XDEBUG_VER=2.7.0
 
 WORKDIR /var/www/html
 
@@ -18,6 +22,10 @@ RUN apk add --no-cache --virtual .build-deps \
       icu-dev \
       zlib-dev && \
     apk add --no-cache --virtual .runtime-deps \
+      busybox-suid \
+      mariadb-client \
+      git \
+      sudo \
       bash \
       freetype \
       libpng \
@@ -41,24 +49,28 @@ RUN apk add --no-cache --virtual .build-deps \
       soap \
       intl && \
     pecl install redis-$PHP_REDIS_VER && \
-    pecl install xdebug-$PHP_XDEBUG_VER && \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
 
-COPY docker/mage2/etc /usr/local/etc/
-COPY docker/mage2/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY --chown=www-data:www-data composer.json composer.lock ./
+COPY docker/cli/etc /usr/local/etc/
+COPY docker/cli/bin /usr/local/bin/
+COPY docker/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 && chmod +x /usr/local/bin/n98-magerun2
 
 RUN chmod +x /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/mage2install
 
-ENV PHP_MEMORY_LIMIT 2G
-ENV PHP_ENABLE_XDEBUG false
-ENV UPLOAD_MAX_FILESIZE 64M
 ENV MAGENTO_ROOT /var/www/html
-ENV MAGENTO_RUN_MODE developer
+ENV COMPOSER_HOME /var/www/html/var/composer_home
+ENV PATH ${MAGENTO_ROOT}/bin:${PATH}
+ENV CRON_INSTALL false
 ENV DEBUG false
+
+USER www-data
 
 ENTRYPOINT ["docker-entrypoint"]
 
-EXPOSE 9000
-
-CMD ["php-fpm"]
+CMD ["/bin/bash"]

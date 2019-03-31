@@ -36,17 +36,71 @@ services:
       MYSQL_PASSWORD: ${DB_USER_PASSWORD}
     restart: always
 
+  rediscache:
+    image: redis:${REDIS_VER}
+    depends_on:
+      - db
+    ports:
+      - 6379
+    restart: always
+
+  redissession:
+    image: redis:${REDIS_VER}
+    depends_on:
+      - db
+    ports:
+      - 6379
+    restart: always
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_VER}
+    depends_on:
+      - db
+    ports:
+      - 9200
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    restart: always
+
   mage2:
-    image: ${MAGE2_IMAGE}
+    image: ${MAGE2FPM_IMAGE}
     depends_on:
       - db
     ports:
       - 9000
     volumes:
-      - ./auth.json:/var/www/html/auth.json
       - mage2data:/var/www/html
+      - ./auth.json:/var/www/html/auth.json
+
+  cli:
+    image: ${MAGE2CLI_IMAGE}
+    depends_on:
+      - db
+      - rediscache
+      - redissession
+      - elasticsearch
+    volumes:
+      - mage2data:/var/www/html
+      - ./auth.json:/var/www/html/auth.json
+
+  cron:
+    image: ${MAGE2CLI_IMAGE}
+    command: crond -l 2 -f
+    depends_on:
+      - db
+      - mage2
+    volumes:
+      - mage2data:/var/www/html
+      - ./auth.json:/var/www/html/auth.json
+    environment:
+      - "CRON_INSTALL=true"
+    restart: always
 
 volumes:
   mage2data:
+  esdata:
   mariadb:
     external: true

@@ -1,1 +1,68 @@
-version: '3'
+version: "3"
+
+services:
+
+  vue-s8t:
+    image: ${VUESTOREFRONT_IMAGE}
+    build:
+      context: ./docker/vuestorefront/vue-storefront
+      dockerfile: ./docker/vue-storefront/Dockerfile
+    env_file: ./docker/vuestorefront/vue-storefront/docker/vue-storefront/default.env
+    environment:
+      VS_ENV: ${VS_ENV}
+    volumes:
+      - ./docker/vuestorefront/vue-storefront/.babelrc:/var/www/.babelrc
+      - ./docker/vuestorefront/vue-storefront/config:/var/www/config
+      - ./docker/vuestorefront/vue-storefront/core:/var/www/core
+      - ./docker/vuestorefront/vue-storefront/ecosystem.json:/var/www/ecosystem.json
+      - ./docker/vuestorefront/vue-storefront/.eslintignore:/var/www/.eslintignore
+      - ./docker/vuestorefront/vue-storefront/.eslintrc.js:/var/www/.eslintrc.js
+      - ./docker/vuestorefront/vue-storefront/lerna.json:/var/www/lerna.json
+      - ./docker/vuestorefront/vue-storefront/tsconfig.json:/var/www/tsconfig.json
+      - ./docker/vuestorefront/vue-storefront/tsconfig-build.json:/var/www/tsconfig-build.json
+      - ./docker/vuestorefront/vue-storefront/shims.d.ts:/var/www/shims.d.ts
+      - ./docker/vuestorefront/vue-storefront/package.json:/var/www/package.json
+      - ./docker/vuestorefront/vue-storefront/src:/var/www/src
+      - ./docker/vuestorefront/vue-storefront/var:/var/www/var
+    tmpfs:
+      - /var/www/dist
+    ports:
+      - ${VUE_STOREFRONT_PORT}:3000
+
+  vue-s8t-api:
+    image: ${VUESTOREFRONT_API_IMAGE}
+    build:
+      context: ./docker/vuestorefront/vue-storefront-api
+      dockerfile: ./docker/vue-storefront-api/Dockerfile
+    depends_on:
+      - elasticsearch
+      - redisvue
+    env_file: ./docker/vuestorefront/vue-storefront-api/docker/vue-storefront-api/default.env
+    environment:
+      VS_ENV: ${VS_ENV}
+    volumes:
+      - ./docker/vuestorefront/vue-storefront-api/config:/var/www/config
+      - ./docker/vuestorefront/vue-storefront-api/ecosystem.json:/var/www/ecosystem.json
+      - ./docker/vuestorefront/vue-storefront-api/migrations:/var/www/migrations
+      - ./docker/vuestorefront/vue-storefront-api/package.json:/var/www/package.json
+      - ./docker/vuestorefront/vue-storefront-api/scripts:/var/www/scripts
+      - ./docker/vuestorefront/vue-storefront-api/src:/var/www/src
+      - ./docker/vuestorefront/vue-storefront-api/var:/var/www/var
+    tmpfs:
+      - /var/www/dist
+    ports:
+      - ${VUE_STOREFRONT_API_PORT}:8080
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${KIBANA_VER}
+    volumes:
+      - ./docker/vuestorefront/vue-storefront-api/docker/kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - ${KIBANA_PORT}:5601
+    depends_on:
+      - elasticsearch
+
+  redisvue:
+    image: redis:${REDIS_VER}
+    ports:
+      - 6379

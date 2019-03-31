@@ -97,3 +97,5 @@ composer.phar
 
 # Mage2playground
 .env
+docker/vuestorefront/vue-storefront/
+docker/vuestorefront/vue-storefront-api/

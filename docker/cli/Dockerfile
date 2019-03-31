@@ -22,6 +22,7 @@ RUN apk add --no-cache --virtual .build-deps \
       icu-dev \
       zlib-dev && \
     apk add --no-cache --virtual .runtime-deps \
+      busybox-suid \
       mariadb-client \
       git \
       sudo \
@@ -65,6 +66,7 @@ RUN chmod +x /usr/local/bin/mage2install
 ENV MAGENTO_ROOT /var/www/html
 ENV COMPOSER_HOME /var/www/html/var/composer_home
 ENV PATH ${MAGENTO_ROOT}/bin:${PATH}
+ENV CRON_INSTALL false
 ENV DEBUG false
 
 USER www-data

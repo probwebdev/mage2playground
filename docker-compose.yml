@@ -66,7 +66,7 @@ services:
     restart: always
 
   mage2:
-    image: ${MAGE2_IMAGE}
+    image: ${MAGE2FPM_IMAGE}
     depends_on:
       - db
     ports:
@@ -81,6 +81,7 @@ services:
       - db
       - rediscache
       - redissession
+      - elasticsearch
     volumes:
       - mage2data:/var/www/html
       - ./auth.json:/var/www/html/auth.json

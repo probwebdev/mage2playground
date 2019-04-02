@@ -13,7 +13,7 @@ services:
       VARNISH_CACHE_SIZE: ${VARNISH_CACHE_SIZE}
       VARNISH_PARAMS: ${VARNISH_PARAMS}
     volumes:
-      - ./docker/varnish/default.vcl:/etc/varnish/default.vcl
+      - ./docker/varnish/config/default.vcl:/etc/varnish/default.vcl
     restart: always
 
   nginx:
@@ -67,7 +67,6 @@ services:
       - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - esdata:/usr/share/elasticsearch/data
     environment:
-      - "discovery.type=single-node"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     restart: always
 

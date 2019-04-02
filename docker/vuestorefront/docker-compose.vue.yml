@@ -5,25 +5,25 @@ services:
   vue-s8t:
     image: ${VUESTOREFRONT_IMAGE}
     build:
-      context: ./docker/vuestorefront/vue-storefront
+      context: ./vue-storefront
       dockerfile: ./docker/vue-storefront/Dockerfile
-    env_file: ./docker/vuestorefront/vue-storefront/docker/vue-storefront/default.env
+    env_file: ./vue-storefront/docker/vue-storefront/default.env
     environment:
       VS_ENV: ${VS_ENV}
     volumes:
-      - ./docker/vuestorefront/vue-storefront/.babelrc:/var/www/.babelrc
-      - ./docker/vuestorefront/vue-storefront/config:/var/www/config
-      - ./docker/vuestorefront/vue-storefront/core:/var/www/core
-      - ./docker/vuestorefront/vue-storefront/ecosystem.json:/var/www/ecosystem.json
-      - ./docker/vuestorefront/vue-storefront/.eslintignore:/var/www/.eslintignore
-      - ./docker/vuestorefront/vue-storefront/.eslintrc.js:/var/www/.eslintrc.js
-      - ./docker/vuestorefront/vue-storefront/lerna.json:/var/www/lerna.json
-      - ./docker/vuestorefront/vue-storefront/tsconfig.json:/var/www/tsconfig.json
-      - ./docker/vuestorefront/vue-storefront/tsconfig-build.json:/var/www/tsconfig-build.json
-      - ./docker/vuestorefront/vue-storefront/shims.d.ts:/var/www/shims.d.ts
-      - ./docker/vuestorefront/vue-storefront/package.json:/var/www/package.json
-      - ./docker/vuestorefront/vue-storefront/src:/var/www/src
-      - ./docker/vuestorefront/vue-storefront/var:/var/www/var
+      - ./vue-storefront/.babelrc:/var/www/.babelrc
+      - ./vue-storefront/config:/var/www/config
+      - ./vue-storefront/core:/var/www/core
+      - ./vue-storefront/ecosystem.json:/var/www/ecosystem.json
+      - ./vue-storefront/.eslintignore:/var/www/.eslintignore
+      - ./vue-storefront/.eslintrc.js:/var/www/.eslintrc.js
+      - ./vue-storefront/lerna.json:/var/www/lerna.json
+      - ./vue-storefront/tsconfig.json:/var/www/tsconfig.json
+      - ./vue-storefront/tsconfig-build.json:/var/www/tsconfig-build.json
+      - ./vue-storefront/shims.d.ts:/var/www/shims.d.ts
+      - ./vue-storefront/package.json:/var/www/package.json
+      - ./vue-storefront/src:/var/www/src
+      - ./vue-storefront/var:/var/www/var
     tmpfs:
       - /var/www/dist
     ports:
@@ -32,23 +32,23 @@ services:
   vue-s8t-api:
     image: ${VUESTOREFRONT_API_IMAGE}
     build:
-      context: ./docker/vuestorefront/vue-storefront-api
+      context: ./vue-storefront-api
       dockerfile: ./docker/vue-storefront-api/Dockerfile
     depends_on:
       - elasticsearch
       - redisvue
-    env_file: ./docker/vuestorefront/vue-storefront-api/docker/vue-storefront-api/default.env
+    env_file: ./vue-storefront-api/docker/vue-storefront-api/default.env
     environment:
       VS_ENV: ${VS_ENV}
       REDIS_HOST: redisvue
     volumes:
-      - ./docker/vuestorefront/vue-storefront-api/config:/var/www/config
-      - ./docker/vuestorefront/vue-storefront-api/ecosystem.json:/var/www/ecosystem.json
-      - ./docker/vuestorefront/vue-storefront-api/migrations:/var/www/migrations
-      - ./docker/vuestorefront/vue-storefront-api/package.json:/var/www/package.json
-      - ./docker/vuestorefront/vue-storefront-api/scripts:/var/www/scripts
-      - ./docker/vuestorefront/vue-storefront-api/src:/var/www/src
-      - ./docker/vuestorefront/vue-storefront-api/var:/var/www/var
+      - ./vue-storefront-api/config:/var/www/config
+      - ./vue-storefront-api/ecosystem.json:/var/www/ecosystem.json
+      - ./vue-storefront-api/migrations:/var/www/migrations
+      - ./vue-storefront-api/package.json:/var/www/package.json
+      - ./vue-storefront-api/scripts:/var/www/scripts
+      - ./vue-storefront-api/src:/var/www/src
+      - ./vue-storefront-api/var:/var/www/var
     tmpfs:
       - /var/www/dist
     ports:

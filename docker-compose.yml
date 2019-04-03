@@ -2,17 +2,10 @@ version: "3"
 
 services:
 
-  nginx:
-    image: nginx:${NGINX_VER}
-    ports:
-      - 80
-    volumes:
-      - mage2data:/var/www/html:ro
-      - ./docker/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    restart: always
-
   varnish:
     image: ${VARNISH_IMAGE}
+    depends_on:
+      - nginx
     ports:
       - ${VARNISH_PORT}:80
     environment:
@@ -20,7 +13,18 @@ services:
       VARNISH_CACHE_SIZE: ${VARNISH_CACHE_SIZE}
       VARNISH_PARAMS: ${VARNISH_PARAMS}
     volumes:
-      - ./docker/varnish/default.vcl:/etc/varnish/default.vcl
+      - ./docker/varnish/config/default.vcl:/etc/varnish/default.vcl
+    restart: always
+
+  nginx:
+    image: nginx:${NGINX_VER}
+    depends_on:
+      - mage2
+    ports:
+      - 80
+    volumes:
+      - mage2data:/var/www/html:ro
+      - ./docker/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     restart: always
 
   db:
@@ -53,15 +57,16 @@ services:
     restart: always
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_VER}
+    image: mage2elastic:${ES_VER}
     depends_on:
       - db
     ports:
       - 9200
+      - 9300
     volumes:
+      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - esdata:/usr/share/elasticsearch/data
     environment:
-      - "discovery.type=single-node"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     restart: always
 

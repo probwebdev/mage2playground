@@ -2,15 +2,39 @@ version: "3"
 
 services:
 
+  varnish:
+    build:
+      context: ./docker/varnish
+
   db:
     ports:
       - ${DB_PORT}:3306
 
   elasticsearch:
+    image: mage2elastic:${ES_VER}
+    build:
+      context: ./docker/elasticsearch
+      args:
+        - ES_VER=${ES_VER}
     ports:
       - ${ES_PORT}:9200
 
+  mage2:
+    build:
+      context: .
+      args:
+        - PHP_SERVER_VER=${PHP_SERVER_VER}
+        - PHP_REDIS_VER=${PHP_REDIS_VER}
+        - PHP_XDEBUG_VER=${PHP_XDEBUG_VER}
+
   cli:
+    build:
+      context: .
+      dockerfile: ./docker/cli/Dockerfile
+      args:
+        - COMPOSER_VER=${COMPOSER_VER}
+        - PHP_CLI_VER=${PHP_CLI_VER}
+        - PHP_REDIS_VER=${PHP_REDIS_VER}
     environment:
       MAGE2_INSTALL_PARAMS: ${MAGE2_INSTALL_PARAMS}
       MAGE2_USE_SAMPLE_DATA: ${MAGE2_USE_SAMPLE_DATA}

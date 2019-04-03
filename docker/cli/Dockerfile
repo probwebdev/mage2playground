@@ -56,7 +56,7 @@ COPY --chown=www-data:www-data composer.json composer.lock ./
 COPY docker/cli/etc /usr/local/etc/
 COPY docker/cli/bin /usr/local/bin/
 COPY docker/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 && chmod +x /usr/local/bin/n98-magerun2
 

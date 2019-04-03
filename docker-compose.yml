@@ -92,16 +92,18 @@ services:
       - ./auth.json:/var/www/html/auth.json
 
   cron:
-    image: ${MAGE2CLI_IMAGE}
-    command: crond -l 2 -f
+    image: ${MAGE2CRON_IMAGE}
+    build:
+      context: .
+      dockerfile: ./docker/cron/Dockerfile
+      args:
+        - MAGE2CLI_IMAGE=${MAGE2CLI_IMAGE}
     depends_on:
       - db
       - mage2
     volumes:
       - mage2data:/var/www/html
       - ./auth.json:/var/www/html/auth.json
-    environment:
-      - "CRON_INSTALL=true"
     restart: always
 
 volumes:

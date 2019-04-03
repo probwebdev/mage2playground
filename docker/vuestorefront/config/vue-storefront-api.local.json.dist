@@ -314,7 +314,7 @@
       }
     }
   },
-  "usePriceTiers": false,
+  "usePriceTiers": true,
   "boost": {
     "name": 3,
     "category.name": 1,

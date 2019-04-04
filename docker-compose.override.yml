@@ -39,3 +39,10 @@ services:
       MAGE2_INSTALL_PARAMS: ${MAGE2_INSTALL_PARAMS}
       MAGE2_USE_SAMPLE_DATA: ${MAGE2_USE_SAMPLE_DATA}
       MAGE2_VARNISH_FPC: ${MAGE2_VARNISH_FPC}
+
+  cron:
+    build:
+      context: .
+      dockerfile: ./docker/cron/Dockerfile
+      args:
+        - MAGE2CLI_IMAGE=${MAGE2CLI_IMAGE}

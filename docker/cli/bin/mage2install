@@ -18,12 +18,6 @@ if [[ -n "${MAGE2_INSTALL_PARAMS}" ]]; then
     # Use separate regexp's to eliminate unexpected behaviour
     MAGE2_INSTALL_PARAMS=$(sed -E -e "s/^[\"\']//" -e "s/[\"\']$//" <<< ${MAGE2_INSTALL_PARAMS})
 
-    if [[ "${MAGE2_USE_SAMPLE_DATA}" = "true" ]]; then
-        echo "Deploy Sample Data..."
-        magento sampledata:deploy
-        MAGE2_INSTALL_PARAMS="${MAGE2_INSTALL_PARAMS} --use-sample-data"
-    fi
-
     echo "Mage2 installation started..."
     INSTALL_CMD="magento setup:install ${MAGE2_INSTALL_PARAMS}"
 
@@ -47,6 +41,14 @@ if [[ -n "${MAGE2_INSTALL_PARAMS}" ]]; then
         --session-save-redis-host=redissession \
         --session-save-redis-log-level=3 \
         --session-save-redis-db=2
+
+    if [[ "${MAGE2_USE_SAMPLE_DATA}" = "true" ]]; then
+        magento sampledata:deploy
+        magento setup:upgrade
+        magento setup:di:compile
+        magento setup:static-content:deploy -f
+        magento cache:flush
+    fi
 
     echo "Update permissions..."
     find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +

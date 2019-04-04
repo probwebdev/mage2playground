@@ -93,11 +93,6 @@ services:
 
   cron:
     image: ${MAGE2CRON_IMAGE}
-    build:
-      context: .
-      dockerfile: ./docker/cron/Dockerfile
-      args:
-        - MAGE2CLI_IMAGE=${MAGE2CLI_IMAGE}
     depends_on:
       - db
       - mage2

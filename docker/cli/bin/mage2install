@@ -5,10 +5,6 @@
 # Ensure our Magento directory exists
 mkdir -p ${MAGENTO_ROOT}
 
-if [[ -f ${MAGENTO_ROOT}/auth.json ]]; then
-    COMPOSER_AUTH=$(cat ${MAGENTO_ROOT}/auth.json)
-fi
-
 if [[ -n "${MAGE2_INSTALL_PARAMS}" ]]; then
     echo "Run Composer install..."
     composer install

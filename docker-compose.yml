@@ -13,7 +13,7 @@ services:
       VARNISH_CACHE_SIZE: ${VARNISH_CACHE_SIZE}
       VARNISH_PARAMS: ${VARNISH_PARAMS}
     volumes:
-      - ./docker/varnish/config/default.vcl:/etc/varnish/default.vcl
+      - ./docker/varnish/config/default.vcl:/etc/varnish/default.vcl:ro
     restart: always
 
   nginx:

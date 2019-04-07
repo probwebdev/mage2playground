@@ -36,6 +36,7 @@ From the Project root run following commands:
 - `git clone https://github.com/DivanteLtd/vue-storefront.git vue-storefront` and checkout to latest stable release
 - `git clone https://github.com/DivanteLtd/vue-storefront-api.git vue-storefront-api` and checkout to latest stable release
 - From inside **vue-storefront-api** folder run `git clone https://github.com/magento/magento2-sample-data.git var/magento2-sample-data`
+- Add following line to **/etc/hosts** -> `127.0.0.1 vue-s8t-api`
 
 Setup Magento API https://docs.vuestorefront.io/guide/installation/magento.html   
 Copy example configuration files:

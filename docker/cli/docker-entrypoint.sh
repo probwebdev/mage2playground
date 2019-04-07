@@ -5,6 +5,10 @@
 # Ensure our Magento directory exists
 mkdir -p ${MAGENTO_ROOT}
 
+if [[ -f ${MAGENTO_ROOT}/auth.json ]]; then
+    export COMPOSER_AUTH=$(cat ${MAGENTO_ROOT}/auth.json)
+fi
+
 [[ "${CRON_INSTALL}" = "true" ]] && magento cron:install
 
 exec "$@"

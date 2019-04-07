@@ -42,7 +42,6 @@ services:
 
   cron:
     build:
-      context: .
-      dockerfile: ./docker/cron/Dockerfile
+      context: ./docker/cron
       args:
         - MAGE2CLI_IMAGE=${MAGE2CLI_IMAGE}

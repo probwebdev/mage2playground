@@ -6,6 +6,8 @@ services:
     image: ${PWA_STUDIO_IMAGE}
     build:
       context: ./pwa-studio
+      args:
+        - NODE_VER=${PWA_STUDIO_NODE_VER}
     env_file:
       - ./docker/pwa-studio/pwa-studio.env
     depends_on:

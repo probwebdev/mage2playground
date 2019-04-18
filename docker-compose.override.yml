@@ -42,6 +42,15 @@ services:
         - PHP_SERVER_VER=${PHP_SERVER_VER}
         - PHP_REDIS_VER=${PHP_REDIS_VER}
         - PHP_XDEBUG_VER=${PHP_XDEBUG_VER}
+    volumes:
+      - ./app/etc/env.php:${MAGE2_ROOT}/app/etc/env.php
+      - ./app/code:${MAGE2_ROOT}/app/code
+      - ./app/design:${MAGE2_ROOT}/app/design
+      - ./dev:${MAGE2_ROOT}/dev
+      - ./lib:${MAGE2_ROOT}/lib
+      - ./vendor:${MAGE2_ROOT}/vendor
+      - ./composer.json:${MAGE2_ROOT}/composer.json
+      - ./composer.lock:${MAGE2_ROOT}/composer.lock
 
   cli:
     build:

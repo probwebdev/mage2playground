@@ -7,16 +7,26 @@ services:
       context: ./docker/varnish
     ports:
       - ${VARNISH_PORT}:80
+    volumes:
+      - ./docker/varnish/config/default.vcl:/etc/varnish/default.vcl
     restart: on-failure
 
   nginx:
     ports:
       - ${NGINX_PORT}:80
+    volumes:
+      - mage2data:${MAGE2_ROOT}
+      - ./docker/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf
     restart: on-failure
 
   db:
     ports:
       - ${DB_PORT}:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_USER_PASSWORD}
     restart: on-failure
 
   rediscache:
@@ -26,13 +36,13 @@ services:
     restart: on-failure
 
   elasticsearch:
-    image: mage2elastic:${ES_VER}
-    build:
-      context: ./docker/elasticsearch
-      args:
-        - ES_VER=${ES_VER}
     ports:
       - ${ES_PORT}:9200
+    volumes:
+      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     restart: on-failure
 
   mage2:
@@ -43,12 +53,14 @@ services:
         - PHP_REDIS_VER=${PHP_REDIS_VER}
         - PHP_XDEBUG_VER=${PHP_XDEBUG_VER}
     volumes:
+      - mage2data:${MAGE2_ROOT}
       - ./app/etc/env.php:${MAGE2_ROOT}/app/etc/env.php
       - ./app/code:${MAGE2_ROOT}/app/code
       - ./app/design:${MAGE2_ROOT}/app/design
       - ./dev:${MAGE2_ROOT}/dev
       - ./lib:${MAGE2_ROOT}/lib
       - ./vendor:${MAGE2_ROOT}/vendor
+      - ./auth.json:${MAGE2_ROOT}/auth.json
       - ./composer.json:${MAGE2_ROOT}/composer.json
       - ./composer.lock:${MAGE2_ROOT}/composer.lock
 
@@ -64,10 +76,25 @@ services:
       MAGE2_INSTALL_PARAMS: ${MAGE2_INSTALL_PARAMS}
       MAGE2_USE_SAMPLE_DATA: ${MAGE2_USE_SAMPLE_DATA}
       MAGE2_VARNISH_FPC: ${MAGE2_VARNISH_FPC}
+    volumes:
+      - mage2data:${MAGE2_ROOT}
+      - ./auth.json:${MAGE2_ROOT}/auth.json
+      - ./composer.json:${MAGE2_ROOT}/composer.json
+      - ./composer.lock:${MAGE2_ROOT}/composer.lock
 
   cron:
     build:
       context: ./docker/cron
       args:
         - MAGE2CLI_IMAGE=${MAGE2CLI_IMAGE}
+    volumes:
+      - mage2data:${MAGE2_ROOT}
+      - ./app/etc/env.php:${MAGE2_ROOT}/app/etc/env.php
+      - ./auth.json:${MAGE2_ROOT}/auth.json
+      - ./composer.json:${MAGE2_ROOT}/composer.json
+      - ./composer.lock:${MAGE2_ROOT}/composer.lock
     restart: on-failure
+
+volumes:
+  mage2data:
+  esdata:

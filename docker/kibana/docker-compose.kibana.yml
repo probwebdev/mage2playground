@@ -3,14 +3,10 @@ version: "3"
 services:
 
   kibana:
-    image: mage2kibana:${ES_VER}
-    build:
-      context: ./docker/kibana
-      args:
-        - KIBANA_VER=${KIBANA_VER}
+    image: docker.elastic.co/kibana/kibana:${KIBANA_VER}
     depends_on:
       - elasticsearch
     volumes:
-      - ./docker/kibana/config/:/usr/share/kibana/config:ro
+      - ./docker/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     ports:
       - ${KIBANA_PORT}:5601

@@ -12,8 +12,6 @@ services:
       VARNISH_CONFIG: ${VARNISH_CONFIG}
       VARNISH_CACHE_SIZE: ${VARNISH_CACHE_SIZE}
       VARNISH_PARAMS: ${VARNISH_PARAMS}
-    volumes:
-      - ./docker/varnish/config/default.vcl:/etc/varnish/default.vcl:ro
 
   nginx:
     image: nginx:${NGINX_VER}
@@ -21,9 +19,6 @@ services:
       - mage2
     ports:
       - 80
-    volumes:
-      - mage2data:/var/www/html:ro
-      - ./docker/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
 
   db:
     image: mariadb:${DB_VER}
@@ -31,11 +26,6 @@ services:
       - mariadb:/var/lib/mysql
     ports:
       - 3306
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_USER_PASSWORD}
 
   rediscache:
     image: redis:${REDIS_VER}
@@ -52,17 +42,12 @@ services:
       - 6379
 
   elasticsearch:
-    image: mage2elastic:${ES_VER}
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_VER}
     depends_on:
       - db
     ports:
       - 9200
       - 9300
-    volumes:
-      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-      - esdata:/usr/share/elasticsearch/data
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
 
   mage2:
     image: ${MAGE2FPM_IMAGE}
@@ -70,9 +55,6 @@ services:
       - db
     ports:
       - 9000
-    volumes:
-      - mage2data:/var/www/html
-      - ./auth.json:/var/www/html/auth.json
 
   cli:
     image: ${MAGE2CLI_IMAGE}
@@ -81,21 +63,13 @@ services:
       - rediscache
       - redissession
       - elasticsearch
-    volumes:
-      - mage2data:/var/www/html
-      - ./auth.json:/var/www/html/auth.json
 
   cron:
     image: ${MAGE2CRON_IMAGE}
     depends_on:
       - db
       - mage2
-    volumes:
-      - mage2data:/var/www/html
-      - ./auth.json:/var/www/html/auth.json
 
 volumes:
-  mage2data:
-  esdata:
   mariadb:
     external: true

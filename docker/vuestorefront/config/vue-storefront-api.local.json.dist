@@ -11,7 +11,7 @@
     "excludeDisabledProducts": false
   },
   "elasticsearch": {
-    "host": "elasticsearch",
+    "host": "elasticsearchvue",
     "port": 9200,
     "protocol": "http",
     "min_score": 0.01,

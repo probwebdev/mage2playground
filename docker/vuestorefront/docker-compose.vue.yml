@@ -35,7 +35,7 @@ services:
       context: ./vue-storefront-api
       dockerfile: ./docker/vue-storefront-api/Dockerfile
     depends_on:
-      - elasticsearch
+      - elasticsearchvue
       - redisvue
     env_file: ./vue-storefront-api/docker/vue-storefront-api/default.env
     environment:
@@ -54,7 +54,21 @@ services:
     ports:
       - ${VUE_STOREFRONT_API_PORT}:8080
 
+  elasticsearchvue:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.16
+    ports:
+      - 9210:9200
+    volumes:
+      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - esvuedata:/usr/share/elasticsearch/data
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    restart: on-failure
+
   redisvue:
     image: redis:${REDIS_VER}
     ports:
       - 6379
+
+volumes:
+  esvuedata:

@@ -52,7 +52,6 @@ RUN apk add --no-cache --virtual .build-deps \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
 
-COPY --chown=www-data:www-data composer.json composer.lock ./
 COPY docker/cli/etc /usr/local/etc/
 COPY docker/cli/bin /usr/local/bin/
 COPY docker/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint

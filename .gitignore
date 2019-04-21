@@ -99,3 +99,4 @@ composer.phar
 .env
 /vue-storefront
 /vue-storefront-api
+/pwa-studio

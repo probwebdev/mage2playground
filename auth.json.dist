@@ -4,5 +4,8 @@
          "username": "< TOKEN >",
          "password": "< TOKEN >"
       }
+   },
+   "github-oauth": {
+      "github.com": "< TOKEN >"
    }
 }

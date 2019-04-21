@@ -5,6 +5,6 @@
 # Ensure our Magento directory exists
 mkdir -p ${MAGENTO_ROOT}
 
-sudo -u www-data magento cron:install
+sudo -u magento magento cron:install
 
 exec "$@"

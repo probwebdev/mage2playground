@@ -45,6 +45,12 @@ RUN apk add --no-cache --virtual .build-deps \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
 
+ARG MAGE2_UID=1000
+ARG MAGE2_GID=1000
+RUN addgroup -S -g $MAGE2_GID magento && \
+    adduser -S -G magento -u $MAGE2_UID magento && \
+    adduser magento www-data
+
 COPY docker/mage2/etc /usr/local/etc/
 COPY docker/mage2/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 

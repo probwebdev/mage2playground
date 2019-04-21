@@ -15,7 +15,7 @@ services:
     ports:
       - ${NGINX_PORT}:80
     volumes:
-      - mage2data:${MAGE2_ROOT}
+      - ./:${MAGE2_ROOT}:ro
       - ./docker/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf
     restart: on-failure
 
@@ -39,7 +39,7 @@ services:
     ports:
       - ${ES_PORT}:9200
     volumes:
-      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - esdata:/usr/share/elasticsearch/data
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -49,26 +49,20 @@ services:
     build:
       context: .
       args:
+        - MAGE2_UID=${MAGE2_UID}
+        - MAGE2_GID=${MAGE2_GID}
         - PHP_SERVER_VER=${PHP_SERVER_VER}
         - PHP_REDIS_VER=${PHP_REDIS_VER}
         - PHP_XDEBUG_VER=${PHP_XDEBUG_VER}
     volumes:
-      - mage2data:${MAGE2_ROOT}
-      - ./app/etc/env.php:${MAGE2_ROOT}/app/etc/env.php
-      - ./app/code:${MAGE2_ROOT}/app/code
-      - ./app/design:${MAGE2_ROOT}/app/design
-      - ./dev:${MAGE2_ROOT}/dev
-      - ./lib:${MAGE2_ROOT}/lib
-      - ./vendor:${MAGE2_ROOT}/vendor
-      - ./auth.json:${MAGE2_ROOT}/auth.json
-      - ./composer.json:${MAGE2_ROOT}/composer.json
-      - ./composer.lock:${MAGE2_ROOT}/composer.lock
+      - ./:${MAGE2_ROOT}
 
   cli:
     build:
-      context: .
-      dockerfile: ./docker/cli/Dockerfile
+      context: ./docker/cli
       args:
+        - MAGE2_UID=${MAGE2_UID}
+        - MAGE2_GID=${MAGE2_GID}
         - COMPOSER_VER=${COMPOSER_VER}
         - PHP_CLI_VER=${PHP_CLI_VER}
         - PHP_REDIS_VER=${PHP_REDIS_VER}
@@ -77,10 +71,7 @@ services:
       MAGE2_USE_SAMPLE_DATA: ${MAGE2_USE_SAMPLE_DATA}
       MAGE2_VARNISH_FPC: ${MAGE2_VARNISH_FPC}
     volumes:
-      - mage2data:${MAGE2_ROOT}
-      - ./auth.json:${MAGE2_ROOT}/auth.json
-      - ./composer.json:${MAGE2_ROOT}/composer.json
-      - ./composer.lock:${MAGE2_ROOT}/composer.lock
+      - ./:${MAGE2_ROOT}
 
   cron:
     build:
@@ -88,13 +79,8 @@ services:
       args:
         - MAGE2CLI_IMAGE=${MAGE2CLI_IMAGE}
     volumes:
-      - mage2data:${MAGE2_ROOT}
-      - ./app/etc/env.php:${MAGE2_ROOT}/app/etc/env.php
-      - ./auth.json:${MAGE2_ROOT}/auth.json
-      - ./composer.json:${MAGE2_ROOT}/composer.json
-      - ./composer.lock:${MAGE2_ROOT}/composer.lock
+      - ./:${MAGE2_ROOT}
     restart: on-failure
 
 volumes:
-  mage2data:
   esdata:

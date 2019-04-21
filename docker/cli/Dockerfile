@@ -52,9 +52,15 @@ RUN apk add --no-cache --virtual .build-deps \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
 
-COPY docker/cli/etc /usr/local/etc/
-COPY docker/cli/bin /usr/local/bin/
-COPY docker/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+ARG MAGE2_UID=1000
+ARG MAGE2_GID=1000
+RUN addgroup -S -g $MAGE2_GID magento && \
+    adduser -S -G magento -u $MAGE2_UID magento && \
+    adduser magento www-data
+
+COPY etc /usr/local/etc/
+COPY bin /usr/local/bin/
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 && chmod +x /usr/local/bin/n98-magerun2
@@ -65,10 +71,9 @@ RUN chmod +x /usr/local/bin/mage2install
 ENV MAGENTO_ROOT /var/www/html
 ENV COMPOSER_HOME /var/www/html/var/composer_home
 ENV PATH ${MAGENTO_ROOT}/bin:${PATH}
-ENV CRON_INSTALL false
 ENV DEBUG false
 
-USER www-data
+USER magento
 
 ENTRYPOINT ["docker-entrypoint"]
 

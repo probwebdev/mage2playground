@@ -97,6 +97,9 @@ composer.phar
 
 # Mage2playground
 .env
+docker/cli/mage2cli.env
+docker/varnish/mage2varnish.env
+docker/vuestorefront/mage2vue.env
 /vue-storefront
 /vue-storefront-api
 /pwa-studio

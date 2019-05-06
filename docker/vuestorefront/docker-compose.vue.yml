@@ -7,9 +7,9 @@ services:
     build:
       context: ./vue-storefront
       dockerfile: ./docker/vue-storefront/Dockerfile
-    env_file: ./vue-storefront/docker/vue-storefront/default.env
-    environment:
-      VS_ENV: ${VS_ENV}
+    env_file:
+      - ./vue-storefront/docker/vue-storefront/default.env
+      - ./docker/vuestorefront/mage2vue.env
     volumes:
       - ./vue-storefront/.babelrc:/var/www/.babelrc
       - ./vue-storefront/config:/var/www/config
@@ -37,10 +37,9 @@ services:
     depends_on:
       - elasticsearchvue
       - redisvue
-    env_file: ./vue-storefront-api/docker/vue-storefront-api/default.env
-    environment:
-      VS_ENV: ${VS_ENV}
-      REDIS_HOST: redisvue
+    env_file:
+      - ./vue-storefront-api/docker/vue-storefront-api/default.env
+      - ./docker/vuestorefront/mage2vue.env
     volumes:
       - ./vue-storefront-api/config:/var/www/config
       - ./vue-storefront-api/ecosystem.json:/var/www/ecosystem.json

@@ -8,10 +8,6 @@ services:
       - nginx
     ports:
       - 80
-    environment:
-      VARNISH_CONFIG: ${VARNISH_CONFIG}
-      VARNISH_CACHE_SIZE: ${VARNISH_CACHE_SIZE}
-      VARNISH_PARAMS: ${VARNISH_PARAMS}
 
   nginx:
     image: nginx:${NGINX_VER}

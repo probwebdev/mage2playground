@@ -9,7 +9,7 @@ services:
       args:
         - NODE_VER=${PWA_STUDIO_NODE_VER}
     env_file:
-      - ./docker/pwa-studio/pwa-studio.env
+      - ./docker/pwa-studio/mage2pwa.env
     depends_on:
       - nginx
     volumes:
@@ -21,7 +21,7 @@ services:
       - ./pwa-studio/packages/venia-concept/.storybook:/home/node/packages/venia-concept/.storybook
       - ./pwa-studio/packages/venia-concept/src:/home/node/packages/venia-concept/src
       - ./pwa-studio/packages/venia-concept/static:/home/node/packages/venia-concept/static
-      - ./docker/pwa-studio/pwa-studio.env:/home/node/packages/venia-concept/.env
+      - ./docker/pwa-studio/mage2pwa.env:/home/node/packages/venia-concept/.env
     ports:
       - 10000:10000
 

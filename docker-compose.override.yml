@@ -18,17 +18,14 @@ services:
       - ${NGINX_PORT}:80
     volumes:
       - ./:${MAGE2_ROOT}:ro
-      - ./docker/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/config/mage2playground.conf:/etc/nginx/conf.d/default.conf
     restart: on-failure
 
   db:
     ports:
       - ${DB_PORT}:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_USER_PASSWORD}
+    env_file:
+      ./docker/db/mage2db.env
     restart: on-failure
 
   rediscache:

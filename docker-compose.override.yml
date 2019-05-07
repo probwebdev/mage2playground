@@ -35,6 +35,11 @@ services:
     restart: on-failure
 
   elasticsearch:
+    image: mage2elastic:${ES_VER}
+    build:
+      context: ./docker/elasticsearch
+      args:
+        - ES_VER=${ES_VER}
     ports:
       - ${ES_PORT}:9200
     environment:

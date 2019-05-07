@@ -43,7 +43,7 @@
     "verbosityLevel": "display-everything"
   },
   "redis": {
-    "host": "redisvue",
+    "host": "rediscache",
     "port": 6379,
     "db": 0
   },

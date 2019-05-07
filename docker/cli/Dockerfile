@@ -21,18 +21,6 @@ RUN apk add --no-cache --virtual .build-deps \
       libxslt-dev \
       icu-dev \
       zlib-dev && \
-    apk add --no-cache --virtual .runtime-deps \
-      busybox-suid \
-      mariadb-client \
-      git \
-      sudo \
-      bash \
-      freetype \
-      libpng \
-      libjpeg-turbo \
-      icu-libs \
-      libxslt \
-      libzip && \
     docker-php-ext-configure gd \
       --with-freetype-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include \
@@ -51,6 +39,21 @@ RUN apk add --no-cache --virtual .build-deps \
     pecl install redis-$PHP_REDIS_VER && \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
+
+RUN apk add --no-cache --virtual .runtime-deps \
+      'su-exec>=0.2' \
+      sudo \
+      bash \
+      shadow \
+      busybox-suid \
+      mariadb-client \
+      git \
+      freetype \
+      libpng \
+      libjpeg-turbo \
+      icu-libs \
+      libxslt \
+      libzip
 
 ARG MAGE2_UID=1000
 ARG MAGE2_GID=1000
@@ -73,8 +76,6 @@ ENV COMPOSER_HOME /var/www/html/var/composer_home
 ENV PATH ${MAGENTO_ROOT}/bin:${PATH}
 ENV DEBUG false
 
-USER magento
-
 ENTRYPOINT ["docker-entrypoint"]
 
-CMD ["/bin/bash"]
+CMD ["bash"]

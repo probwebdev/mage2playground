@@ -17,14 +17,6 @@ RUN apk add --no-cache --virtual .build-deps \
       libxslt-dev \
       icu-dev \
       zlib-dev && \
-    apk add --no-cache --virtual .runtime-deps \
-      bash \
-      freetype \
-      libpng \
-      libjpeg-turbo \
-      icu-libs \
-      libxslt \
-      libzip && \
     docker-php-ext-configure gd \
       --with-freetype-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include \
@@ -44,6 +36,16 @@ RUN apk add --no-cache --virtual .build-deps \
     pecl install xdebug-$PHP_XDEBUG_VER && \
     docker-php-ext-enable redis && \
     apk del --no-network .build-deps
+
+RUN apk add --no-cache --virtual .runtime-deps \
+      bash \
+      shadow \
+      freetype \
+      libpng \
+      libjpeg-turbo \
+      icu-libs \
+      libxslt \
+      libzip
 
 ARG MAGE2_UID=1000
 ARG MAGE2_GID=1000

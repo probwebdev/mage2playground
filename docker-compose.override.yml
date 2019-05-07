@@ -7,6 +7,8 @@ services:
       context: ./docker/varnish
     ports:
       - ${VARNISH_PORT}:80
+    env_file:
+      ./docker/varnish/mage2varnish.env
     volumes:
       - ./docker/varnish/config/default.vcl:/etc/varnish/default.vcl
     restart: on-failure
@@ -16,17 +18,14 @@ services:
       - ${NGINX_PORT}:80
     volumes:
       - ./:${MAGE2_ROOT}:ro
-      - ./docker/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/config/mage2playground.conf:/etc/nginx/conf.d/default.conf
     restart: on-failure
 
   db:
     ports:
       - ${DB_PORT}:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_USER_PASSWORD}
+    env_file:
+      ./docker/db/mage2db.env
     restart: on-failure
 
   rediscache:
@@ -38,11 +37,11 @@ services:
   elasticsearch:
     ports:
       - ${ES_PORT}:9200
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - esdata:/usr/share/elasticsearch/data
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     restart: on-failure
 
   mage2:
@@ -54,6 +53,9 @@ services:
         - PHP_SERVER_VER=${PHP_SERVER_VER}
         - PHP_REDIS_VER=${PHP_REDIS_VER}
         - PHP_XDEBUG_VER=${PHP_XDEBUG_VER}
+    environment:
+      MAGE2_UID: ${MAGE2_UID}
+      MAGE2_GID: ${MAGE2_GID}
     volumes:
       - ./:${MAGE2_ROOT}
 
@@ -66,10 +68,11 @@ services:
         - COMPOSER_VER=${COMPOSER_VER}
         - PHP_CLI_VER=${PHP_CLI_VER}
         - PHP_REDIS_VER=${PHP_REDIS_VER}
+    env_file:
+      ./docker/cli/mage2cli.env
     environment:
-      MAGE2_INSTALL_PARAMS: ${MAGE2_INSTALL_PARAMS}
-      MAGE2_USE_SAMPLE_DATA: ${MAGE2_USE_SAMPLE_DATA}
-      MAGE2_VARNISH_FPC: ${MAGE2_VARNISH_FPC}
+      MAGE2_UID: ${MAGE2_UID}
+      MAGE2_GID: ${MAGE2_GID}
     volumes:
       - ./:${MAGE2_ROOT}
 
@@ -78,6 +81,9 @@ services:
       context: ./docker/cron
       args:
         - MAGE2CLI_IMAGE=${MAGE2CLI_IMAGE}
+    environment:
+      MAGE2_UID: ${MAGE2_UID}
+      MAGE2_GID: ${MAGE2_GID}
     volumes:
       - ./:${MAGE2_ROOT}
     restart: on-failure

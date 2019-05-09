@@ -5,6 +5,7 @@ services:
   haproxy:
     ports:
       - ${HAPROXY_PORT}:80
+      - ${HAPROXY_STATS_PORT}:8888
     volumes:
       - ./docker/haproxy/config/:/usr/local/etc/haproxy:ro
     restart: on-failure

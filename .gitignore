@@ -106,6 +106,7 @@ docker/elasticsearch/config/elasticsearch.yml
 docker/kibana/config/kibana.yml
 docker/varnish/config/default.vcl
 docker/nginx/config/mage2playground.conf
+docker/haproxy/config/haproxy.cfg
 /vue-storefront
 /vue-storefront-api
 /pwa-studio

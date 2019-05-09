@@ -2,11 +2,16 @@ version: "3"
 
 services:
 
+  haproxy:
+    ports:
+      - ${HAPROXY_PORT}:80
+    volumes:
+      - ./docker/haproxy/config/:/usr/local/etc/haproxy:ro
+    restart: on-failure
+
   varnish:
     build:
       context: ./docker/varnish
-    ports:
-      - ${VARNISH_PORT}:80
     env_file:
       ./docker/varnish/mage2varnish.env
     volumes:
@@ -26,6 +31,8 @@ services:
       - ${DB_PORT}:3306
     env_file:
       ./docker/db/mage2db.env
+    volumes:
+      - mariadb:/var/lib/mysql
     restart: on-failure
 
   rediscache:
@@ -95,3 +102,5 @@ services:
 
 volumes:
   esdata:
+  mariadb:
+    external: true

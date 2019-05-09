@@ -1,0 +1,53 @@
+#
+# Proxy mode
+#
+
+global
+    log /dev/log    local0
+    maxconn         4096
+    daemon
+
+defaults
+    log             global
+    mode            http
+
+    timeout connect 10s
+    timeout client  30s
+    timeout server  30s
+
+    option          httplog
+    option          dontlognull
+    option          forwardfor
+    option          httpclose
+    http-reuse      always
+
+frontend proxy
+    bind		    *:80
+    default_backend mage2playground
+
+#
+#    acl mage2vue hdr_beg(host) -i mage2vue.docker
+#    use_backend vue_storefront if mage2vue
+#
+#    acl mage2pwa hdr_beg(host) -i mage2pwa.docker
+#    use_backend pwa_studio if mage2pwa
+#
+
+backend mage2playground
+    retries 2
+    http-request set-header X-Forwarded-Port %[dst_port]
+    server mage2playground_1 varnish:80
+
+#
+# backend server config
+#
+# backend vue_storefront
+#     retries 2
+#     http-request set-header X-Forwarded-Port %[dst_port]
+#     server vue_storefront_1 vue-s8t:3000
+#
+# backend pwa_studio
+#     retries 2
+#     http-request set-header X-Forwarded-Port %[dst_port]
+#     server pwa_studio_1 pwa-studio:10000
+#

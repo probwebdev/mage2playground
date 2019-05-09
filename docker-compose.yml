@@ -2,6 +2,13 @@ version: "3"
 
 services:
 
+  haproxy:
+    image: haproxy:${HAPROXY_VER}
+    depends_on:
+      - varnish
+    ports:
+      - 80
+
   varnish:
     image: ${VARNISH_IMAGE}
     depends_on:
@@ -18,8 +25,6 @@ services:
 
   db:
     image: mariadb:${DB_VER}
-    volumes:
-      - mariadb:/var/lib/mysql
     ports:
       - 3306
 
@@ -65,7 +70,3 @@ services:
     depends_on:
       - db
       - mage2
-
-volumes:
-  mariadb:
-    external: true

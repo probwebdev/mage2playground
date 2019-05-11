@@ -4,7 +4,7 @@ Default Magento 2 stack for this project is: HAProxy 1.9, Varnish 5.2, Nginx, PH
 
 ## Quick Reference
 ### Project setup
-Copy **.env.dist** to **.env**. Please make sure that ports from env file aren't used by host system   
+Copy **.env.dist** to **.env**. Please make sure that ports from env file aren't used by host system. Don't forget to set your user UID-GID so there won't be an issue with file permissions. UID-GID can be changes during build time and runtime.  
 Copy **docker/cli/mage2cli.env.dist** to **docker/cli/mage2cli.env**   
 Copy **docker/db/mage2db.env.dist** to **docker/db/mage2db.env**   
 Copy **docker/varnish/mage2varnish.env.dist** to **docker/varnish/mage2varnish.env**   

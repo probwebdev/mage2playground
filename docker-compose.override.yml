@@ -23,7 +23,7 @@ services:
     ports:
       - ${NGINX_PORT}:80
     volumes:
-      - ./:${MAGE2_ROOT}:ro
+      - ${MAGE2_PATH}:${MAGE2_ROOT}:ro
       - ./docker/nginx/config/mage2playground.conf:/etc/nginx/conf.d/default.conf
     restart: on-failure
 
@@ -70,7 +70,7 @@ services:
       MAGE2_UID: ${MAGE2_UID}
       MAGE2_GID: ${MAGE2_GID}
     volumes:
-      - ./:${MAGE2_ROOT}
+      - ${MAGE2_PATH}:${MAGE2_ROOT}
 
   cli:
     build:
@@ -87,7 +87,7 @@ services:
       MAGE2_UID: ${MAGE2_UID}
       MAGE2_GID: ${MAGE2_GID}
     volumes:
-      - ./:${MAGE2_ROOT}
+      - ${MAGE2_PATH}:${MAGE2_ROOT}
 
   cron:
     build:
@@ -98,7 +98,7 @@ services:
       MAGE2_UID: ${MAGE2_UID}
       MAGE2_GID: ${MAGE2_GID}
     volumes:
-      - ./:${MAGE2_ROOT}
+      - ${MAGE2_PATH}:${MAGE2_ROOT}
     restart: on-failure
 
 volumes:

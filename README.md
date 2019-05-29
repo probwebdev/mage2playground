@@ -12,7 +12,7 @@ Copy **docker/haproxy/config/haproxy.cfg.dist** to **docker/haproxy/config/hapro
 Copy **docker/nginx/config/mage2playground.conf.dist** to **docker/nginx/config/mage2playground.conf**   
 Copy **docker/elasticsearch/config/elasticsearch.yml.dist** to **docker/elasticsearch/config/elasticsearch.yml**   
 Copy **docker/varnish/config/default.vcl.dist** to **docker/varnish/config/default.vcl**   
-Copy **auth.json.dist** to **auth.json** and add generated tokens from [Magento Marketplace](https://marketplace.magento.com/). Steps how to do it can be found [here](https://devdocs.magento.com/guides/v2.3/install-gde/prereq/connect-auth.html)   
+Copy **mage2/auth.json.dist** to **mage2/auth.json** and add generated tokens from [Magento Marketplace](https://marketplace.magento.com/). Steps how to do it can be found [here](https://devdocs.magento.com/guides/v2.3/install-gde/prereq/connect-auth.html)   
 Create external volume `docker volume create mariadb`   
 Add following line to **/etc/hosts** -> `127.0.0.1 mage2playground.docker`
 
@@ -37,9 +37,9 @@ That container have pre-installed **magento** command, **composer** and **n98-ma
 #### Setup
 Copy **docker/vuestorefront/mage2vue.env.dist** to **docker/vuestorefront/mage2vue.env**   
 From the Project root run following commands:
-- `git clone https://github.com/DivanteLtd/vue-storefront.git vue-storefront` and checkout to latest stable release
-- `git clone https://github.com/DivanteLtd/vue-storefront-api.git vue-storefront-api` and checkout to latest stable release
-- From inside **vue-storefront-api** folder run `git clone https://github.com/magento/magento2-sample-data.git var/magento2-sample-data`
+- `git clone https://github.com/DivanteLtd/vue-storefront.git mage2vue` and checkout to latest stable release
+- `git clone https://github.com/DivanteLtd/vue-storefront-api.git mage2vue-api` and checkout to latest stable release
+- From inside **mage2vue-api** folder run `git clone https://github.com/magento/magento2-sample-data.git var/magento2-sample-data`
 - Add following lines to **/etc/hosts**:   
 `127.0.0.1 mage2vue.docker`   
 `127.0.0.1 vue-s8t-api`
@@ -47,9 +47,9 @@ From the Project root run following commands:
 
 Setup Magento API https://docs.vuestorefront.io/guide/installation/magento.html   
 Copy example configuration files:
-- **docker/vuestorefront/config/vue-storefront.local.json.dist** to **vue-storefront/config/local.json**
-- **docker/vuestorefront/config/vue-storefront-api.local.json.dist** to **vue-storefront-api/config/local.json**
-- Populate **vue-storefront-api/config/local.json** with Magento API tokens like stated in [Docs](https://docs.vuestorefront.io/guide/installation/magento.html#fast-integration)
+- **docker/vuestorefront/config/vue-storefront.local.json.dist** to **mage2vue/config/local.json**
+- **docker/vuestorefront/config/vue-storefront-api.local.json.dist** to **mage2vue-api/config/local.json**
+- Populate **mage2vue-api/config/local.json** with Magento API tokens like stated in [Docs](https://docs.vuestorefront.io/guide/installation/magento.html#fast-integration)
 - Run `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker/vuestorefront/docker-compose.vue.yml -f docker/kibana/docker-compose.kibana.yml up -d`
 - Go to http://mage2vue.docker in your browser to see initial setup 
 - Import data from Magento to Vue Storefront by running following command inside vue-s8t-api container `yarn mage2vs import` with following `yarn setup`   
@@ -64,9 +64,9 @@ Reviews sync (PHP 7.1 Required) [Magento 2 Review API](https://github.com/Divant
 **NOTE**: Before deploying PWA Studio you should completely remove Magento Sample Data and use instead [Venia Sample Data](https://magento-research.github.io/pwa-studio/venia-pwa-concept/install-sample-data/)   
 Copy **docker/pwa-studio/mage2pwa.env.dist** to **docker/pwa-studio/mage2pwa.env**   
 From the Project root run following commands:
-- `https://github.com/magento-research/pwa-studio.git pwa-studio` and checkout to latest stable release
-- Update `pwa-studio/packages/venia-concept/deployVeniaSampleData.sh` script with proper github url `githubBaseUrl='https://github.com/PMET-public'`. You can run it inside **cli** container to deploy sample data but don't forget to mount it as volume(refer to docker/pwa-studio/docker-compose.pwa.yml)
-- Copy from `docker/pwa-studio` **Dockerfile** and **pwa-studio.sh** into cloned `pwa-studio` dir (replace default Dockerfile)
+- `https://github.com/magento-research/pwa-studio.git mage2pwa` and checkout to latest stable release
+- Update `mage2pwa/packages/venia-concept/deployVeniaSampleData.sh` script with proper github url `githubBaseUrl='https://github.com/PMET-public'`. You can run it inside **cli** container to deploy sample data but don't forget to mount it as volume(refer to docker/pwa-studio/docker-compose.pwa.yml)
+- Copy from `docker/pwa-studio` **Dockerfile** and **pwa-studio.sh** into cloned `mage2pwa` dir (replace default Dockerfile)
 - Add following lines to **/etc/hosts**:   
 `127.0.0.1 mage2pwa.docker` 
 - Uncomment PWA Studio related lines inside `docker/haproxy/config/haproxy.cfg`

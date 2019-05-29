@@ -5,7 +5,7 @@ services:
   pwa-studio:
     image: ${PWA_STUDIO_IMAGE}
     build:
-      context: ./pwa-studio
+      context: ${MAGE2PWA_PATH}
       args:
         - NODE_VER=${PWA_STUDIO_NODE_VER}
     env_file:
@@ -13,18 +13,18 @@ services:
     depends_on:
       - nginx
     volumes:
-      - ./pwa-studio/packages/peregrine/.storybook:/home/node/packages/peregrine/.storybook
-      - ./pwa-studio/packages/peregrine/scripts:/home/node/packages/peregrine/scripts
-      - ./pwa-studio/packages/peregrine/src:/home/node/packages/peregrine/src
-      - ./pwa-studio/packages/pwa-buildpack/src:/home/node/packages/pwa-buildpack/src
-      - ./pwa-studio/packages/upward-js/lib:/home/node/packages/upward-js/lib
-      - ./pwa-studio/packages/venia-concept/.storybook:/home/node/packages/venia-concept/.storybook
-      - ./pwa-studio/packages/venia-concept/src:/home/node/packages/venia-concept/src
-      - ./pwa-studio/packages/venia-concept/static:/home/node/packages/venia-concept/static
+      - ${MAGE2PWA_PATH}/packages/peregrine/.storybook:/home/node/packages/peregrine/.storybook
+      - ${MAGE2PWA_PATH}/packages/peregrine/scripts:/home/node/packages/peregrine/scripts
+      - ${MAGE2PWA_PATH}/packages/peregrine/src:/home/node/packages/peregrine/src
+      - ${MAGE2PWA_PATH}/packages/pwa-buildpack/src:/home/node/packages/pwa-buildpack/src
+      - ${MAGE2PWA_PATH}/packages/upward-js/lib:/home/node/packages/upward-js/lib
+      - ${MAGE2PWA_PATH}/packages/venia-concept/.storybook:/home/node/packages/venia-concept/.storybook
+      - ${MAGE2PWA_PATH}/packages/venia-concept/src:/home/node/packages/venia-concept/src
+      - ${MAGE2PWA_PATH}/packages/venia-concept/static:/home/node/packages/venia-concept/static
       - ./docker/pwa-studio/mage2pwa.env:/home/node/packages/venia-concept/.env
     ports:
       - 10000:10000
 
   cli:
     volumes:
-      - ./pwa-studio/packages/venia-concept/deployVeniaSampleData.sh:/var/www/html/deployVeniaSampleData.sh
+      - ${MAGE2PWA_PATH}/packages/venia-concept/deployVeniaSampleData.sh:/var/www/html/deployVeniaSampleData.sh

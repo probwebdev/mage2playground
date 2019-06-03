@@ -53,14 +53,15 @@ RUN addgroup -S -g $MAGE2_GID magento && \
     adduser -S -G magento -u $MAGE2_UID magento && \
     adduser magento www-data
 
-COPY docker/mage2/etc /usr/local/etc/
-COPY docker/mage2/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY etc/ /usr/local/etc/
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_ENABLE_XDEBUG false
 ENV UPLOAD_MAX_FILESIZE 64M
+ENV MAILHOG_SMTP_PORT 1025
 ENV MAGENTO_ROOT /var/www/html
 ENV MAGENTO_RUN_MODE developer
 ENV DEBUG false

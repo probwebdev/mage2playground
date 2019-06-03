@@ -59,7 +59,7 @@ services:
 
   mage2:
     build:
-      context: .
+      context: ./docker/mage2
       args:
         - MAGE2_UID=${MAGE2_UID}
         - MAGE2_GID=${MAGE2_GID}

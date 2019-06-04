@@ -7,7 +7,7 @@ FROM composer:$COMPOSER_VER as composer
 
 WORKDIR /app
 
-COPY composer.json composer.lock ./
+COPY mage2/composer.json composer.lock ./
 
 RUN --mount=type=secret,id=auth_json,dst=/app/auth.json,required composer install --ignore-platform-reqs
 
@@ -65,8 +65,8 @@ RUN addgroup -S -g $MAGE2_GID magento && \
     adduser -S -G magento -u $MAGE2_UID magento && \
     adduser magento www-data
 
-COPY etc/ /usr/local/etc/
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY docker/mage2/etc/ /usr/local/etc/
+COPY docker/mage2/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY --from=composer --chown=www-data:www-data /app ./
 
 RUN chmod +x /usr/local/bin/docker-entrypoint

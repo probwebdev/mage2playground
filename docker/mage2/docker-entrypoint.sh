@@ -6,7 +6,6 @@ set -e
 # Update Configuration Files
 [[ ! -z "${PHP_MEMORY_LIMIT}" ]] && sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-mage2.ini
 [[ ! -z "${UPLOAD_MAX_FILESIZE}" ]] && sed -i "s/!UPLOAD_MAX_FILESIZE!/${UPLOAD_MAX_FILESIZE}/" /usr/local/etc/php/conf.d/zz-mage2.ini
-[[ ! -z "${MAILHOG_SMTP_PORT}" ]] && sed -i "s/!MAILHOG_SMTP_PORT!/${MAILHOG_SMTP_PORT}/" /usr/local/etc/php/conf.d/zz-mage2.ini
 [[ ! -z "${MAGENTO_RUN_MODE}" ]] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
 
 # Ensure our Magento directory exists

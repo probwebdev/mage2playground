@@ -8,23 +8,25 @@ services:
       context: ${MAGE2PWA_PATH}
       args:
         - NODE_VER=${PWA_STUDIO_NODE_VER}
+        - PWA_STUDIO_ROOT=${PWA_STUDIO_ROOT}
     env_file:
       - ./docker/pwa-studio/mage2pwa.env
+    environment:
+      PWASTUDIO_ROOT: ${PWA_STUDIO_ROOT}
+      PWASTUDIO_UID: ${MAGE2_UID}
+      PWASTUDIO_GID: ${MAGE2_GID}
     depends_on:
       - nginx
     volumes:
-      - ${MAGE2PWA_PATH}/packages/peregrine/.storybook:/home/node/packages/peregrine/.storybook
-      - ${MAGE2PWA_PATH}/packages/peregrine/scripts:/home/node/packages/peregrine/scripts
-      - ${MAGE2PWA_PATH}/packages/peregrine/src:/home/node/packages/peregrine/src
-      - ${MAGE2PWA_PATH}/packages/pwa-buildpack/src:/home/node/packages/pwa-buildpack/src
-      - ${MAGE2PWA_PATH}/packages/upward-js/lib:/home/node/packages/upward-js/lib
-      - ${MAGE2PWA_PATH}/packages/venia-concept/.storybook:/home/node/packages/venia-concept/.storybook
-      - ${MAGE2PWA_PATH}/packages/venia-concept/src:/home/node/packages/venia-concept/src
-      - ${MAGE2PWA_PATH}/packages/venia-concept/static:/home/node/packages/venia-concept/static
-      - ./docker/pwa-studio/mage2pwa.env:/home/node/packages/venia-concept/.env
+      - ${MAGE2PWA_PATH}/packages/peregrine/.storybook:${PWA_STUDIO_ROOT}/app/packages/peregrine/.storybook
+      - ${MAGE2PWA_PATH}/packages/peregrine/scripts:${PWA_STUDIO_ROOT}/app/packages/peregrine/scripts
+      - ${MAGE2PWA_PATH}/packages/peregrine/src:${PWA_STUDIO_ROOT}/app/packages/peregrine/src
+      - ${MAGE2PWA_PATH}/packages/pwa-buildpack/src:${PWA_STUDIO_ROOT}/app/packages/pwa-buildpack/src
+      - ${MAGE2PWA_PATH}/packages/upward-js/lib:${PWA_STUDIO_ROOT}/app/packages/upward-js/lib
+      - ${MAGE2PWA_PATH}/packages/venia-concept/.storybook:${PWA_STUDIO_ROOT}/app/packages/venia-concept/.storybook
+      - ${MAGE2PWA_PATH}/packages/venia-concept/src:${PWA_STUDIO_ROOT}/app/packages/venia-concept/src
+      - ${MAGE2PWA_PATH}/packages/venia-concept/static:${PWA_STUDIO_ROOT}/app/packages/venia-concept/static
+      - ./docker/pwa-studio/mage2pwa.env:${PWA_STUDIO_ROOT}/app/packages/venia-concept/.env
     ports:
       - 10000:10000
-
-  cli:
-    volumes:
-      - ${MAGE2PWA_PATH}/packages/venia-concept/deployVeniaSampleData.sh:/var/www/html/deployVeniaSampleData.sh
+      - 8080:8080

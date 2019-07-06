@@ -11,9 +11,9 @@ defaults
     log             global
     mode            http
 
-    timeout connect 5s
-    timeout client  20s
-    timeout server  15s
+    timeout connect 15s
+    timeout client  30s
+    timeout server  30s
 
     option          httplog
     option          dontlognull

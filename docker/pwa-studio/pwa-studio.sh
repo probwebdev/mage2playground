@@ -1,13 +1,22 @@
 #!/usr/bin/env sh
-
 set -e
 
-if [[ -n "${WEBPACK_HOST}" ]]; then
-  WEBPACK_HOST=${WEBPACK_HOST}
-else
-  WEBPACK_HOST=localhost
-fi
+# Ensure Project directory exists
+mkdir -p ${PWASTUDIO_ROOT}/app
 
-yarn run build || exit $?
+# Get current node user UID-GID
+CURRENT_UID="$(id -u node)"
+CURRENT_GID="$(id -g node)"
 
-yarn workspace @magento/venia-concept run watch -- --host ${WEBPACK_HOST}
+# Change node user UID and GID
+[[ ! -z "${PWASTUDIO_UID}" && "${PWASTUDIO_UID}" != "${CURRENT_UID}" ]] && \
+    usermod -u ${PWASTUDIO_UID} node
+
+[[ ! -z "${PWASTUDIO_GID}" && "${PWASTUDIO_GID}" != "${CURRENT_GID}" ]] && \
+    groupmod -g ${PWASTUDIO_GID} node && \
+    find ${PWASTUDIO_ROOT} -group ${CURRENT_GID} -exec chgrp -h node {} +
+
+su-exec node yarn install || exit $?
+su-exec node yarn run build || exit $?
+
+exec su-exec node "$@"

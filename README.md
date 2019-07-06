@@ -60,7 +60,7 @@ At the moment of writing Vue Storefront don't support Elasticsearch 6+
 Native indexer [Magento 2 Data Indexer](https://github.com/DivanteLtd/magento2-vsbridge-indexer)    
 Reviews sync (PHP 7.1 Required) [Magento 2 Review API](https://github.com/DivanteLtd/magento2-review-api) 
 
-### Install and Run PWA Studio
+### Install and Run PWA Studio (UNSTABLE)
 **NOTE**: Before deploying PWA Studio you should completely remove Magento Sample Data and use instead [Venia Sample Data](https://magento-research.github.io/pwa-studio/venia-pwa-concept/install-sample-data/)   
 Copy **docker/pwa-studio/mage2pwa.env.dist** to **docker/pwa-studio/mage2pwa.env**   
 From the Project root run following commands:

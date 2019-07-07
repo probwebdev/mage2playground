@@ -25,7 +25,7 @@ COPY --chown=node:node package.json yarn.lock babel.config.js browserslist.js ma
 
 RUN yarn install && yarn cache clean
 
-COPY packages ./packages/
+COPY --chown=node:node packages ./packages
 
 USER root
 

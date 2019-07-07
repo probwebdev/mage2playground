@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 set -e
 
 # Ensure Project directory exists
@@ -16,7 +16,5 @@ CURRENT_GID="$(id -g node)"
     groupmod -g ${PWASTUDIO_GID} node && \
     find ${PWASTUDIO_ROOT} -group ${CURRENT_GID} -exec chgrp -h node {} +
 
-su-exec node yarn install || exit $?
 su-exec node yarn run build || exit $?
-
 exec su-exec node "$@"

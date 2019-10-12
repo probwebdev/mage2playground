@@ -18,15 +18,16 @@ services:
     depends_on:
       - nginx
     volumes:
-      - ${MAGE2PWA_PATH}/packages/peregrine/.storybook:${PWA_STUDIO_ROOT}/app/packages/peregrine/.storybook
       - ${MAGE2PWA_PATH}/packages/peregrine/scripts:${PWA_STUDIO_ROOT}/app/packages/peregrine/scripts
-      - ${MAGE2PWA_PATH}/packages/peregrine/src:${PWA_STUDIO_ROOT}/app/packages/peregrine/src
-      - ${MAGE2PWA_PATH}/packages/pwa-buildpack/src:${PWA_STUDIO_ROOT}/app/packages/pwa-buildpack/src
+      - ${MAGE2PWA_PATH}/packages/peregrine/lib:${PWA_STUDIO_ROOT}/app/packages/peregrine/lib
+      - ${MAGE2PWA_PATH}/packages/pwa-buildpack/lib:${PWA_STUDIO_ROOT}/app/packages/pwa-buildpack/lib
+      - ${MAGE2PWA_PATH}/packages/pwa-buildpack/bin:${PWA_STUDIO_ROOT}/app/packages/pwa-buildpack/bin
       - ${MAGE2PWA_PATH}/packages/upward-js/lib:${PWA_STUDIO_ROOT}/app/packages/upward-js/lib
-      - ${MAGE2PWA_PATH}/packages/venia-concept/.storybook:${PWA_STUDIO_ROOT}/app/packages/venia-concept/.storybook
       - ${MAGE2PWA_PATH}/packages/venia-concept/src:${PWA_STUDIO_ROOT}/app/packages/venia-concept/src
       - ${MAGE2PWA_PATH}/packages/venia-concept/static:${PWA_STUDIO_ROOT}/app/packages/venia-concept/static
+      - ${MAGE2PWA_PATH}/packages/venia-ui/.storybook:${PWA_STUDIO_ROOT}/app/packages/venia-ui/.storybook
+      - ${MAGE2PWA_PATH}/packages/venia-ui/lib:${PWA_STUDIO_ROOT}/app/packages/venia-ui/lib
+      - ${MAGE2PWA_PATH}/packages/venia-ui/templates:${PWA_STUDIO_ROOT}/app/packages/venia-ui/templates
       - ./docker/pwa-studio/mage2pwa.env:${PWA_STUDIO_ROOT}/app/packages/venia-concept/.env
     ports:
-      - 10000:10000
       - 8080:8080

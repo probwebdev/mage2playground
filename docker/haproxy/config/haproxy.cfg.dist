@@ -53,4 +53,4 @@ backend mage2playground
 #backend pwa_studio
 #    balance leastconn
 #    retries 2
-#    server pwa_studio_1 pwa-studio:10000
+#    server pwa_studio_1 pwa-studio:8080

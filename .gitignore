@@ -17,7 +17,7 @@ docker/elasticsearch/config/elasticsearch.yml
 docker/kibana/config/kibana.yml
 docker/varnish/config/default.vcl
 docker/nginx/config/mage2playground.conf
-docker/haproxy/config/haproxy.cfg
+docker/traefik/traefik.yml
 /mage2vue
 /mage2vue-api
 /mage2pwa

@@ -53,7 +53,7 @@
       "name": "German Store",
       "url": "/de",
       "elasticsearch": {
-        "host": "vue-s8t-api:8080/api/catalog",
+        "host": "api.storefront.docker/api/catalog",
         "index": "vue_storefront_catalog_de"
       },
       "tax": {
@@ -80,7 +80,7 @@
       "name": "Italian Store",
       "url": "/it",
       "elasticsearch": {
-        "host": "vue-s8t-api:8080/api/catalog",
+        "host": "api.storefront.docker/api/catalog",
         "index": "vue_storefront_catalog_it"
       },
       "tax": {

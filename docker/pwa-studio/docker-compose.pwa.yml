@@ -30,4 +30,9 @@ services:
       - ${MAGE2PWA_PATH}/packages/venia-ui/templates:${PWA_STUDIO_ROOT}/app/packages/venia-ui/templates
       - ./docker/pwa-studio/mage2pwa.env:${PWA_STUDIO_ROOT}/app/packages/venia-concept/.env
     ports:
-      - 8080:8080
+      - 3001:3001
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pwa-studio.entrypoints=web"
+      - "traefik.http.routers.pwa-studio.rule=Host(`venia.docker`, `www.venia.docker`)"
+      - "traefik.http.services.pwa-studio.loadbalancer.server.port=3001"

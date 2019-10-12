@@ -16,12 +16,16 @@ USER node
 RUN mkdir $PWA_STUDIO_ROOT/app
 WORKDIR $PWA_STUDIO_ROOT/app
 
+COPY --chown=node:node packages/babel-preset-peregrine/package.json ./packages/babel-preset-peregrine/package.json
+COPY --chown=node:node packages/graphql-cli-validate-magento-pwa-queries/package.json ./packages/graphql-cli-validate-magento-pwa-queries/package.json
 COPY --chown=node:node packages/peregrine/package.json ./packages/peregrine/package.json
 COPY --chown=node:node packages/pwa-buildpack/package.json ./packages/pwa-buildpack/package.json
 COPY --chown=node:node packages/upward-js/package.json ./packages/upward-js/package.json
 COPY --chown=node:node packages/upward-spec/package.json ./packages/upward-spec/package.json
+COPY --chown=node:node packages/venia-ui/package.json ./packages/venia-ui/package.json
 COPY --chown=node:node packages/venia-concept/package.json ./packages/venia-concept/package.json
-COPY --chown=node:node package.json yarn.lock babel.config.js browserslist.js magento-compatibility.js ./
+COPY --chown=node:node scripts/monorepo-introduction.js ./scripts/monorepo-introduction.js
+COPY --chown=node:node package.json yarn.lock babel.config.js magento-compatibility.js ./
 
 RUN yarn install && yarn cache clean
 

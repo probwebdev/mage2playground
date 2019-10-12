@@ -1,6 +1,6 @@
 # Magento 2 Playground   
 Dev environment to play with Magento 2, Vue Storefront, PWA Studio   
-Default Magento 2 stack for this project is: HAProxy 1.9, Varnish 5.2, Nginx, PHP-FPM 7.2, MariaDB 10.3, Elasticsearch 5.6, Redis 5
+Default Magento 2 stack for this project is: HAProxy 2.0, Varnish 5.2, Nginx, PHP-FPM 7.2, MariaDB 10.4, Elasticsearch 5.6, Redis 5
 
 ## Quick Reference
 ### Project setup
@@ -33,7 +33,7 @@ That container have pre-installed **magento** command, **composer** and **n98-ma
 - e.g magento `docker-compose run --rm cli magento cache:clean`   
 - or n98-magerun2 `docker-compose run --rm cli n98-magerun2 sys:info`   
 
-### Install and Run Vue Storefront
+### Install and Run Vue Storefront (postponed until 1.11 release with Elasticsearch 7 support)
 #### Setup
 Copy **docker/vuestorefront/mage2vue.env.dist** to **docker/vuestorefront/mage2vue.env**   
 From the Project root run following commands:
@@ -58,9 +58,9 @@ e.g `docker exec mage2playground_vue-s8t-api_1 ash` and run those two commands i
 Notes   
 At the moment of writing Vue Storefront don't support Elasticsearch 6+   
 Native indexer [Magento 2 Data Indexer](https://github.com/DivanteLtd/magento2-vsbridge-indexer)    
-Reviews sync (PHP 7.1 Required) [Magento 2 Review API](https://github.com/DivanteLtd/magento2-review-api) 
+Reviews sync [Magento 2 Review API](https://github.com/DivanteLtd/magento2-review-api) 
 
-### Install and Run PWA Studio (UNSTABLE)
+### Install and Run PWA Studio
 **NOTE**: Before deploying PWA Studio you should completely remove Magento Sample Data and use instead [Venia Sample Data](https://magento-research.github.io/pwa-studio/venia-pwa-concept/install-sample-data/)   
 Copy **docker/pwa-studio/mage2pwa.env.dist** to **docker/pwa-studio/mage2pwa.env**   
 From the Project root run following commands:

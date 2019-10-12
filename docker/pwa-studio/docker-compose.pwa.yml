@@ -12,9 +12,9 @@ services:
     env_file:
       - ./docker/pwa-studio/mage2pwa.env
     environment:
-      PWASTUDIO_ROOT: ${PWA_STUDIO_ROOT}
-      PWASTUDIO_UID: ${MAGE2_UID}
-      PWASTUDIO_GID: ${MAGE2_GID}
+      PWA_STUDIO_ROOT: ${PWA_STUDIO_ROOT}
+      PWA_STUDIO_UID: ${MAGE2_UID}
+      PWA_STUDIO_GID: ${MAGE2_GID}
     depends_on:
       - nginx
     volumes:

@@ -24,8 +24,4 @@ fi
     find ${MAGENTO_ROOT} -group ${CURRENT_GID} -exec chgrp -h magento {} +
 
 # Run command as magento user
-if [ "$1" = 'bash' -a "$(id -u)" = '0' ]; then
-	exec su-exec magento "$@"
-fi
-
-exec "$@"
+exec su-exec magento "$@"

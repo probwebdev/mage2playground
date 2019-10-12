@@ -33,7 +33,7 @@ services:
     env_file:
       ./docker/db/mage2db.env
     volumes:
-      - mariadb:/var/lib/mysql
+      - mariadb-data:/var/lib/mysql
     restart: on-failure
 
   rediscache:
@@ -43,18 +43,13 @@ services:
     restart: on-failure
 
   elasticsearch:
-    image: mage2elastic:${ES_VER}
-    build:
-      context: ./docker/elasticsearch
-      args:
-        - ES_VER=${ES_VER}
     ports:
       - ${ES_PORT}:9200
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - esdata:/usr/share/elasticsearch/data
+      - elastic-data:/usr/share/elasticsearch/data
     restart: on-failure
 
   mailhog:
@@ -109,6 +104,6 @@ services:
     restart: on-failure
 
 volumes:
-  esdata:
-  mariadb:
+  elastic-data:
+  mariadb-data:
     external: true

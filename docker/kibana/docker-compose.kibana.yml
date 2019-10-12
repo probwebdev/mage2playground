@@ -3,11 +3,7 @@ version: "3"
 services:
 
   kibana:
-    image: mage2kibana:${ES_VER}
-    build:
-      context: ./docker/kibana
-      args:
-        - KIBANA_VER=${KIBANA_VER}
+    image: docker.elastic.co/kibana/kibana:${KIBANA_VER}
     depends_on:
       - elasticsearch
     volumes:

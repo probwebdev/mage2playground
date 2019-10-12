@@ -1,6 +1,6 @@
 # Magento 2 Playground   
 Dev environment to play with Magento 2, Vue Storefront, PWA Studio   
-Default Magento 2 stack for this project is: HAProxy 2.0, Varnish 5.2, Nginx, PHP-FPM 7.2, MariaDB 10.4, Elasticsearch 5.6, Redis 5
+Default Magento 2 stack for this project is: Traefik 2.0, Varnish 5.2, Nginx, PHP 7.3, MariaDB 10.2, Elasticsearch 6.8, Redis 5
 
 ## Quick Reference
 ### Project setup
@@ -14,16 +14,23 @@ Copy **docker/elasticsearch/config/elasticsearch.yml.dist** to **docker/elastics
 Copy **docker/varnish/config/default.vcl.dist** to **docker/varnish/config/default.vcl**   
 Copy **mage2/auth.json.dist** to **mage2/auth.json** and add generated tokens from [Magento Marketplace](https://marketplace.magento.com/). Steps how to do it can be found [here](https://devdocs.magento.com/guides/v2.3/install-gde/prereq/connect-auth.html)   
 Create external volume `docker volume create mariadb`   
-Add following line to **/etc/hosts** -> `127.0.0.1 mage2playground.docker`
+Add following lines to **/etc/hosts**:
+```
+127.0.0.1 mage2playground.docker
+127.0.0.1 traefik.mage2playground.docker
+127.0.0.1 elastic.mage2playground.docker
+127.0.0.1 mailhog.mage2playground.docker
+```
 
 ### Install and Run Magento 2
 From the Project root run command `docker-compose run --rm cli mage2install`   
 When previous step is finished run `docker-compose up -d` to start Magento 2 stack   
 Optionally you can add Kibana instance by using `docker-compose.kibana.yml`   
 e.g `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker/kibana/docker-compose.kibana.yml up -d`   
-Open your browser and go to http://mage2playground.docker. To access admin dashboard go to **/admin** page. Default creds are _admin/admin123_ (can be changed in mage2cli.env file before installation)   
+Open your browser and go to http://mage2playground.docker. To access admin dashboard go to **/admin** page. Default creds are _admin/admin123_ (can be changed in mage2cli.env file before installation).
+Other services available at address added above.   
 
-Notes   
+#### Notes   
 Magento recommend to use Elasticsearch as Catalog Search engine. You can set it up in Admin Dashboard:
 - Stores-Configuration-Catalog-Catalog-Catalog Search  
 - Choose Elasticsearch 5.0+ and **elasticsearch** as hostname  
@@ -41,10 +48,10 @@ From the Project root run following commands:
 - `git clone https://github.com/DivanteLtd/vue-storefront-api.git mage2vue-api` and checkout to latest stable release
 - From inside **mage2vue-api** folder run `git clone https://github.com/magento/magento2-sample-data.git var/magento2-sample-data`
 - Add following lines to **/etc/hosts**:   
-`127.0.0.1 mage2vue.docker`   
-`127.0.0.1 vue-s8t-api`
-- Uncomment Vue Storefront related lines inside `docker/haproxy/config/haproxy.cfg`
-
+```
+127.0.0.1 storefront.docker
+127.0.0.1 api.storefront.docker
+```
 Setup Magento API https://docs.vuestorefront.io/guide/installation/magento.html   
 Copy example configuration files:
 - **docker/vuestorefront/config/vue-storefront.local.json.dist** to **mage2vue/config/local.json**
@@ -54,8 +61,9 @@ Copy example configuration files:
 - Go to http://mage2vue.docker in your browser to see initial setup 
 - Import data from Magento to Vue Storefront by running following command inside vue-s8t-api container `yarn mage2vs import` with following `yarn setup`   
 e.g `docker exec mage2playground_vue-s8t-api_1 ash` and run those two commands inside   
+- Go to http://storefront.docker in your browser to see initial setup  
 
-Notes   
+#### Notes   
 At the moment of writing Vue Storefront don't support Elasticsearch 6+   
 Native indexer [Magento 2 Data Indexer](https://github.com/DivanteLtd/magento2-vsbridge-indexer)    
 Reviews sync [Magento 2 Review API](https://github.com/DivanteLtd/magento2-review-api) 
@@ -67,10 +75,11 @@ From the Project root run following commands:
 - `https://github.com/magento-research/pwa-studio.git mage2pwa` and checkout to latest stable release
 - Update `mage2pwa/packages/venia-concept/deployVeniaSampleData.sh` script with proper github url `githubBaseUrl='https://github.com/PMET-public'`. You can run it inside **cli** container to deploy sample data but don't forget to mount it as volume(refer to docker/pwa-studio/docker-compose.pwa.yml)
 - Copy from `docker/pwa-studio` **Dockerfile** and **pwa-studio.sh** into cloned `mage2pwa` dir (replace default Dockerfile)
-- Add following lines to **/etc/hosts**:   
-`127.0.0.1 mage2pwa.docker` 
-- Uncomment PWA Studio related lines inside `docker/haproxy/config/haproxy.cfg`
-- Go to http://mage2pwa.docker in your browser to see initial setup   
+- Add following line to **/etc/hosts**:   
+```
+127.0.0.1 venia.docker
+```
+- Go to http://venia.docker in your browser to see initial setup   
 
 ## Useful Links
 - Magento 2 configuration guide https://devdocs.magento.com/guides/v2.3/config-guide/bk-config-guide.html

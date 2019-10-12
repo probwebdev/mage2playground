@@ -53,7 +53,7 @@
   },
   "elasticsearch": {
     "httpAuth": "",
-    "host": "vue-s8t-api:8080/api/catalog",
+    "host": "api.storefront.docker/api/catalog",
     "index": "vue_storefront_catalog",
     "min_score": 0.02,
     "csrTimeout": 5000,
@@ -121,7 +121,7 @@
       "name": "German Store",
       "url": "/de",
       "elasticsearch": {
-        "host": "vue-s8t-api:8080/api/catalog",
+        "host": "api.storefront.docker/api/catalog",
         "index": "vue_storefront_catalog_de"
       },
       "tax": {
@@ -148,7 +148,7 @@
       "name": "Italian Store",
       "url": "/it",
       "elasticsearch": {
-        "host": "vue-s8t-api:8080/api/catalog",
+        "host": "api.storefront.docker/api/catalog",
         "index": "vue_storefront_catalog_it"
       },
       "tax": {
@@ -400,17 +400,17 @@
     "askBeforeRemoveProduct": true,
     "displayItemDiscounts": true,
     "minicartCountType": "quantities",
-    "create_endpoint": "http://vue-s8t-api:8080/api/cart/create?token={{token}}",
-    "updateitem_endpoint": "http://vue-s8t-api:8080/api/cart/update?token={{token}}&cartId={{cartId}}",
-    "deleteitem_endpoint": "http://vue-s8t-api:8080/api/cart/delete?token={{token}}&cartId={{cartId}}",
-    "pull_endpoint": "http://vue-s8t-api:8080/api/cart/pull?token={{token}}&cartId={{cartId}}",
-    "totals_endpoint": "http://vue-s8t-api:8080/api/cart/totals?token={{token}}&cartId={{cartId}}",
-    "paymentmethods_endpoint": "http://vue-s8t-api:8080/api/cart/payment-methods?token={{token}}&cartId={{cartId}}",
-    "shippingmethods_endpoint": "http://vue-s8t-api:8080/api/cart/shipping-methods?token={{token}}&cartId={{cartId}}",
-    "shippinginfo_endpoint": "http://vue-s8t-api:8080/api/cart/shipping-information?token={{token}}&cartId={{cartId}}",
-    "collecttotals_endpoint": "http://vue-s8t-api:8080/api/cart/collect-totals?token={{token}}&cartId={{cartId}}",
-    "deletecoupon_endpoint": "http://vue-s8t-api:8080/api/cart/delete-coupon?token={{token}}&cartId={{cartId}}",
-    "applycoupon_endpoint": "http://vue-s8t-api:8080/api/cart/apply-coupon?token={{token}}&cartId={{cartId}}&coupon={{coupon}}"
+    "create_endpoint": "http://api.storefront.docker/api/cart/create?token={{token}}",
+    "updateitem_endpoint": "http://api.storefront.docker/api/cart/update?token={{token}}&cartId={{cartId}}",
+    "deleteitem_endpoint": "http://api.storefront.docker/api/cart/delete?token={{token}}&cartId={{cartId}}",
+    "pull_endpoint": "http://api.storefront.docker/api/cart/pull?token={{token}}&cartId={{cartId}}",
+    "totals_endpoint": "http://api.storefront.docker/api/cart/totals?token={{token}}&cartId={{cartId}}",
+    "paymentmethods_endpoint": "http://api.storefront.docker/api/cart/payment-methods?token={{token}}&cartId={{cartId}}",
+    "shippingmethods_endpoint": "http://api.storefront.docker/api/cart/shipping-methods?token={{token}}&cartId={{cartId}}",
+    "shippinginfo_endpoint": "http://api.storefront.docker/api/cart/shipping-information?token={{token}}&cartId={{cartId}}",
+    "collecttotals_endpoint": "http://api.storefront.docker/api/cart/collect-totals?token={{token}}&cartId={{cartId}}",
+    "deletecoupon_endpoint": "http://api.storefront.docker/api/cart/delete-coupon?token={{token}}&cartId={{cartId}}",
+    "applycoupon_endpoint": "http://api.storefront.docker/api/cart/apply-coupon?token={{token}}&cartId={{cartId}}&coupon={{coupon}}"
   },
   "products": {
     "useShortCatalogUrls": false,
@@ -426,7 +426,7 @@
     "clearPricesBeforePlatformSync": true,
     "waitForPlatformSync": false,
     "setupVariantByAttributeCode": true,
-    "endpoint": "http://vue-s8t-api:8080/api/product",
+    "endpoint": "http://api.storefront.docker/api/product",
     "defaultFilters": [
       "color",
       "size",
@@ -463,7 +463,7 @@
   },
   "orders": {
     "directBackendSync": true,
-    "endpoint": "http://vue-s8t-api:8080/api/order",
+    "endpoint": "http://api.storefront.docker/api/order",
     "payment_methods_mapping": {
     },
     "offline_orders": {
@@ -495,27 +495,27 @@
     }
   },
   "reviews": {
-    "create_endpoint": "http://vue-s8t-api:8080/api/review/create"
+    "create_endpoint": "http://api.storefront.docker/api/review/create"
   },
   "users": {
     "autoRefreshTokens": true,
-    "endpoint": "http://vue-s8t-api:8080/api/user",
-    "history_endpoint": "http://vue-s8t-api:8080/api/user/order-history?token={{token}}",
-    "resetPassword_endpoint": "http://vue-s8t-api:8080/api/user/reset-password",
-    "changePassword_endpoint": "http://vue-s8t-api:8080/api/user/change-password?token={{token}}",
-    "login_endpoint": "http://vue-s8t-api:8080/api/user/login",
-    "create_endpoint": "http://vue-s8t-api:8080/api/user/create",
-    "me_endpoint": "http://vue-s8t-api:8080/api/user/me?token={{token}}",
-    "refresh_endpoint": "http://vue-s8t-api:8080/api/user/refresh"
+    "endpoint": "http://api.storefront.docker/api/user",
+    "history_endpoint": "http://api.storefront.docker/api/user/order-history?token={{token}}",
+    "resetPassword_endpoint": "http://api.storefront.docker/api/user/reset-password",
+    "changePassword_endpoint": "http://api.storefront.docker/api/user/change-password?token={{token}}",
+    "login_endpoint": "http://api.storefront.docker/api/user/login",
+    "create_endpoint": "http://api.storefront.docker/api/user/create",
+    "me_endpoint": "http://api.storefront.docker/api/user/me?token={{token}}",
+    "refresh_endpoint": "http://api.storefront.docker/api/user/refresh"
   },
   "stock": {
     "synchronize": true,
     "allowOutOfStockInCart": true,
-    "endpoint": "http://vue-s8t-api:8080/api/stock"
+    "endpoint": "http://api.storefront.docker/api/stock"
   },
   "images": {
     "useExactUrlsNoProxy": false,
-    "baseUrl": "http://vue-s8t-api:8080/img/",
+    "baseUrl": "http://api.storefront.docker/img/",
     "productPlaceholder": "/assets/placeholder.jpg"
   },
   "install": {
@@ -568,12 +568,12 @@
     "bundleAllStoreviewLanguages": true
   },
   "mailchimp": {
-    "endpoint": "http://vue-s8t-api:8080/api/ext/mailchimp-subscribe/subscribe"
+    "endpoint": "http://api.storefront.docker/api/ext/mailchimp-subscribe/subscribe"
   },
   "mailer": {
     "endpoint": {
-      "send": "http://vue-s8t-api:8080/api/ext/mail-service/send-email",
-      "token": "http://vue-s8t-api:8080/api/ext/mail-service/get-token"
+      "send": "http://api.storefront.docker/api/ext/mail-service/send-email",
+      "token": "http://api.storefront.docker/api/ext/mail-service/get-token"
     },
     "contactAddress": "contributors@vuestorefront.io",
     "sendConfirmation": true
@@ -586,8 +586,8 @@
     "id": false
   },
   "cms": {
-    "endpoint": "http://vue-s8t-api:8080/api/ext/cms-data/cms{{type}}/{{cmsId}}",
-    "endpointIdentifier": "http://vue-s8t-api:8080/api/ext/cms-data/cms{{type}}Identifier/{{cmsIdentifier}}/storeId/{{storeId}}"
+    "endpoint": "http://api.storefront.docker/api/ext/cms-data/cms{{type}}/{{cmsId}}",
+    "endpointIdentifier": "http://api.storefront.docker/api/ext/cms-data/cms{{type}}Identifier/{{cmsIdentifier}}/storeId/{{storeId}}"
   },
   "cms_block": {
     "max_count": 500

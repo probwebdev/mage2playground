@@ -26,8 +26,13 @@ services:
       - ${MAGE2VUE_PATH}/var:/var/www/var
     tmpfs:
       - /var/www/dist
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vue-s8t.entrypoints=web"
+      - "traefik.http.routers.vue-s8t.rule=Host(`storefront.docker`, `www.storefront.docker`)"
+      - "traefik.http.services.vue-s8t.loadbalancer.server.port=3000"
     ports:
-      - ${MAGE2VUE_PORT}:3000
+      - 3000
 
   vue-s8t-api:
     image: ${VUESTOREFRONT_API_IMAGE}
@@ -50,5 +55,10 @@ services:
       - ${MAGE2VUE_API_PATH}/var:/var/www/var
     tmpfs:
       - /var/www/dist
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vue-s8t-api.entrypoints=web"
+      - "traefik.http.routers.vue-s8t-api.rule=Host(`api.storefront.docker`, `www.api.storefront.docker`)"
+      - "traefik.http.services.vue-s8t-api.loadbalancer.server.port=8080"
     ports:
-      - ${MAGE2VUE_API_PORT}:8080
+      - 8080

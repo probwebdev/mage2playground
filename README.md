@@ -8,7 +8,7 @@ Copy **.env.dist** to **.env**. Please make sure that ports from env file aren't
 Copy **docker/cli/mage2cli.env.dist** to **docker/cli/mage2cli.env**   
 Copy **docker/db/mage2db.env.dist** to **docker/db/mage2db.env**   
 Copy **docker/varnish/mage2varnish.env.dist** to **docker/varnish/mage2varnish.env**   
-Copy **docker/haproxy/config/haproxy.cfg.dist** to **docker/haproxy/config/haproxy.cfg**   
+Copy **docker/traefik/traefik.dist.yml** to **docker/traefik/traefik.yml**   
 Copy **docker/nginx/config/mage2playground.conf.dist** to **docker/nginx/config/mage2playground.conf**   
 Copy **docker/elasticsearch/config/elasticsearch.yml.dist** to **docker/elasticsearch/config/elasticsearch.yml**   
 Copy **docker/varnish/config/default.vcl.dist** to **docker/varnish/config/default.vcl**   

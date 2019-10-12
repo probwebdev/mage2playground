@@ -17,7 +17,7 @@ composer.phar
 # Project
 dev/
 node_modules
-auth.json
+mage2/auth.json
 .editorconfig
 .travis.yml
 *.sample

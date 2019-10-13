@@ -9,7 +9,7 @@ services:
       - 8080
 
   varnish:
-    image: ${VARNISH_IMAGE}
+    image: varnish:${VARNISH_VER}
     depends_on:
       - nginx
     ports:
@@ -31,6 +31,7 @@ services:
     image: redis:${REDIS_VER}
     depends_on:
       - db
+      - mage2
     ports:
       - 6379
 
@@ -38,6 +39,7 @@ services:
     image: redis:${REDIS_VER}
     depends_on:
       - db
+      - mage2
     ports:
       - 6379
 

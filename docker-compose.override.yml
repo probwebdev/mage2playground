@@ -18,12 +18,10 @@ services:
     restart: on-failure
 
   varnish:
-    build:
-      context: ./docker/varnish
-    env_file:
-      ./docker/varnish/mage2varnish.env
+    command: ${VARNISH_COMMAND}
     volumes:
       - ./docker/varnish/config/default.vcl:/etc/varnish/default.vcl
+      - varnish-data:/var/lib/varnish
     restart: on-failure
 
   nginx:
@@ -50,9 +48,15 @@ services:
     restart: on-failure
 
   rediscache:
+    command: --appendonly yes
+    volumes:
+      - rediscache-data:/data
     restart: on-failure
 
   redissession:
+    command: --appendonly yes
+    volumes:
+      - redissession-data:/data
     restart: on-failure
 
   elasticsearch:
@@ -125,6 +129,9 @@ services:
     restart: on-failure
 
 volumes:
+  varnish-data:
+  rediscache-data:
+  redissession-data:
   elastic-data:
   mariadb-data:
     external: true

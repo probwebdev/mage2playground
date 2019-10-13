@@ -1,13 +1,12 @@
 # Magento 2 Playground   
 Dev environment to play with Magento 2, Vue Storefront, PWA Studio   
-Default Magento 2 stack for this project is: Traefik 2.0, Varnish 5.2, Nginx, PHP 7.3, MariaDB 10.2, Elasticsearch 6.8, Redis 5
+Default Magento 2 stack for this project is: Traefik 2.0, Varnish 6.0, Nginx, PHP 7.3, MariaDB 10.2, Elasticsearch 6.8, Redis 5
 
 ## Quick Reference
 ### Project setup
 Copy **.env.dist** to **.env**. Please make sure that ports from env file aren't used by host system. Don't forget to set your user UID-GID so there won't be an issue with file permissions. UID-GID can be changes during build time and runtime.  
 Copy **docker/cli/mage2cli.env.dist** to **docker/cli/mage2cli.env**   
-Copy **docker/db/mage2db.env.dist** to **docker/db/mage2db.env**   
-Copy **docker/varnish/mage2varnish.env.dist** to **docker/varnish/mage2varnish.env**   
+Copy **docker/db/mage2db.env.dist** to **docker/db/mage2db.env**      
 Copy **docker/traefik/traefik.dist.yml** to **docker/traefik/traefik.yml**   
 Copy **docker/nginx/config/mage2playground.conf.dist** to **docker/nginx/config/mage2playground.conf**   
 Copy **docker/elasticsearch/config/elasticsearch.yml.dist** to **docker/elasticsearch/config/elasticsearch.yml**   
@@ -79,7 +78,7 @@ From the Project root run following commands:
 ```
 127.0.0.1 venia.docker
 ```
-- Go to http://venia.docker in your browser to see initial setup   
+- Go to http://venia.docker or http://localhost:8080 in your browser to see initial setup   
 
 ## Useful Links
 - Magento 2 configuration guide https://devdocs.magento.com/guides/v2.3/config-guide/bk-config-guide.html

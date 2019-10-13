@@ -22,6 +22,3 @@ docker/traefik/traefik.yml
 /mage2vue-api
 /mage2pwa
 /mage2
-!/mage2/auth.json.dist
-!/mage2/composer.json
-!/mage2/composer.lock

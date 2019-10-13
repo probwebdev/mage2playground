@@ -14,11 +14,11 @@
     "host": "elasticsearch",
     "port": 9200,
     "protocol": "http",
+    "user": "elastic",
+    "password": "elastic",
     "min_score": 0.01,
     "indices": [
-      "vue_storefront_catalog",
-      "vue_storefront_catalog_de",
-      "vue_storefront_catalog_it"
+      "vue_storefront_magento_1"
     ],
     "indexTypes": [
       "product",
@@ -28,18 +28,23 @@
       "taxrule",
       "review"
     ],
-    "apiVersion": "5.6"
+    "apiVersion": "6.8"
   },
   "redis": {
     "host": "rediscache",
     "port": 6379,
-    "db": 0
+    "db": 0,
+    "auth": false
   },
   "kue": {},
   "availableStores": [
     "de",
     "it"
   ],
+  "msi": {
+    "enabled": false,
+    "defaultStockId": 1
+  },
   "storeViews": {
     "multistore": true,
     "mapStoreUrlsFor": [
@@ -48,13 +53,16 @@
     ],
     "de": {
       "storeCode": "de",
-      "disabled": true,
+      "disabled": false,
       "storeId": 3,
       "name": "German Store",
       "url": "/de",
       "elasticsearch": {
         "host": "api.storefront.docker/api/catalog",
-        "index": "vue_storefront_catalog_de"
+        "index": "vue_storefront_magento_1"
+      },
+      "msi": {
+        "stockId": 2
       },
       "tax": {
         "defaultCountry": "DE",
@@ -75,13 +83,16 @@
     },
     "it": {
       "storeCode": "it",
-      "disabled": true,
+      "disabled": false,
       "storeId": 4,
       "name": "Italian Store",
       "url": "/it",
       "elasticsearch": {
         "host": "api.storefront.docker/api/catalog",
-        "index": "vue_storefront_catalog_it"
+        "index": "vue_storefront_magento_1"
+      },
+      "msi": {
+        "stockId": 2
       },
       "tax": {
         "defaultCountry": "IT",
@@ -110,7 +121,7 @@
     "defaultCountry": "PL",
     "defaultRegion": "",
     "calculateServerSide": true,
-    "alwaysSyncPlatformPricesOver": true,
+    "alwaysSyncPlatformPricesOver": false,
     "usePlatformTotals": true,
     "setConfigurableProductOptions": true,
     "sourcePriceIncludesTax": false
@@ -124,7 +135,8 @@
     "mailchimp-subscribe",
     "example-magento-api",
     "cms-data",
-    "mail-service"
+    "mail-service",
+    "example-processor"
   ],
   "extensions": {
     "mailchimp": {
@@ -140,30 +152,42 @@
         "user": "vuestorefront",
         "pass": "vuestorefront.io"
       },
-      "targetAddressWhitelist": [
-        "contributors@vuestorefront.io"
-      ],
+      "targetAddressWhitelist": ["contributors@vuestorefront.io"],
       "secretString": "__THIS_IS_SO_SECRET__"
+    },
+    "example-processor": {
+      "resultProcessors": {
+        "product": "my-product-processor"
+      }
     }
   },
   "magento2": {
-    "url": "http://nginx/",
     "imgUrl": "http://nginx/media/catalog/product",
     "assetPath": "/../var/magento2-sample-data/pub/media",
+    "api": {
+      "url": "http://nginx/rest",
+      "consumerKey": "",
+      "consumerSecret": "",
+      "accessToken": "",
+      "accessTokenSecret": ""
+    }
+  },
+  "magento1": {
+    "imgUrl": "http://magento-demo.local/media/catalog/product",
+    "assetPath": "",
     "magentoUserName": "",
     "magentoUserPassword": "",
     "httpUserName": "",
     "httpUserPassword": "",
     "api": {
       "url": "http://nginx/rest",
-      "consumerKey": "<YOUR CONSUMER KEY>",
-      "consumerSecret": "<YOUR CONSUMER SECRET>",
-      "accessToken": "<YOUR ACCESS TOKEN>",
-      "accessTokenSecret": "<YOUR ACCESS TOKEN SECRET>"
+      "consumerKey": "",
+      "consumerSecret": "",
+      "accessToken": "",
+      "accessTokenSecret": ""
     }
   },
   "imageable": {
-    "namespace": "",
     "maxListeners": 512,
     "imageSizeLimit": 1024,
     "whitelist": {
@@ -184,137 +208,33 @@
       "queue": 2,
       "process": 4
     },
-    "simd": true,
-    "keepDownloads": true
+    "simd": true
   },
   "entities": {
     "category": {
-      "includeFields": [
-        "children_data",
-        "id",
-        "children_count",
-        "sku",
-        "name",
-        "is_active",
-        "parent_id",
-        "level",
-        "url_key"
-      ]
+      "includeFields": [ "children_data", "id", "children_count", "sku", "name", "is_active", "parent_id", "level", "url_key" ]
     },
     "attribute": {
-      "includeFields": [
-        "attribute_code",
-        "id",
-        "entity_type_id",
-        "options",
-        "default_value",
-        "is_user_defined",
-        "frontend_label",
-        "attribute_id",
-        "default_frontend_label",
-        "is_visible_on_front",
-        "is_visible",
-        "is_comparable"
-      ]
+      "includeFields": [ "attribute_code", "id", "entity_type_id", "options", "default_value", "is_user_defined", "frontend_label", "attribute_id", "default_frontend_label", "is_visible_on_front", "is_visible", "is_comparable" ]
     },
     "productList": {
       "sort": "",
-      "includeFields": [
-        "type_id",
-        "sku",
-        "product_links",
-        "tax_class_id",
-        "special_price",
-        "special_to_date",
-        "special_from_date",
-        "name",
-        "price",
-        "priceInclTax",
-        "originalPriceInclTax",
-        "originalPrice",
-        "specialPriceInclTax",
-        "id",
-        "image",
-        "sale",
-        "new",
-        "url_key"
-      ],
-      "excludeFields": [
-        "configurable_children",
-        "description",
-        "configurable_options",
-        "sgn"
-      ]
+      "includeFields": [ "type_id", "sku", "product_links", "tax_class_id", "special_price", "special_to_date", "special_from_date", "name", "price", "priceInclTax", "originalPriceInclTax", "originalPrice", "specialPriceInclTax", "id", "image", "sale", "new", "url_key" ],
+      "excludeFields": [ "configurable_children", "description", "configurable_options", "sgn" ]
     },
     "productListWithChildren": {
-      "includeFields": [
-        "type_id",
-        "sku",
-        "name",
-        "tax_class_id",
-        "special_price",
-        "special_to_date",
-        "special_from_date",
-        "price",
-        "priceInclTax",
-        "originalPriceInclTax",
-        "originalPrice",
-        "specialPriceInclTax",
-        "id",
-        "image",
-        "sale",
-        "new",
-        "configurable_children.image",
-        "configurable_children.sku",
-        "configurable_children.price",
-        "configurable_children.special_price",
-        "configurable_children.priceInclTax",
-        "configurable_children.specialPriceInclTax",
-        "configurable_children.originalPrice",
-        "configurable_children.originalPriceInclTax",
-        "configurable_children.color",
-        "configurable_children.size",
-        "product_links",
-        "url_key"
-      ],
-      "excludeFields": [
-        "description",
-        "sgn"
-      ]
+      "includeFields": [ "type_id", "sku", "name", "tax_class_id", "special_price", "special_to_date", "special_from_date", "price", "priceInclTax", "originalPriceInclTax", "originalPrice", "specialPriceInclTax", "id", "image", "sale", "new", "configurable_children.image", "configurable_children.sku", "configurable_children.price", "configurable_children.special_price", "configurable_children.priceInclTax", "configurable_children.specialPriceInclTax", "configurable_children.originalPrice", "configurable_children.originalPriceInclTax", "configurable_children.color", "configurable_children.size", "product_links", "url_key"],
+      "excludeFields": [ "description", "sgn"]
     },
     "product": {
-      "excludeFields": [
-        "updated_at",
-        "created_at",
-        "attribute_set_id",
-        "status",
-        "visibility",
-        "tier_prices",
-        "options_container",
-        "msrp_display_actual_price_type",
-        "has_options",
-        "stock.manage_stock",
-        "stock.use_config_min_qty",
-        "stock.use_config_notify_stock_qty",
-        "stock.stock_id",
-        "stock.use_config_backorders",
-        "stock.use_config_enable_qty_inc",
-        "stock.enable_qty_increments",
-        "stock.use_config_manage_stock",
-        "stock.use_config_min_sale_qty",
-        "stock.notify_stock_qty",
-        "stock.use_config_max_sale_qty",
-        "stock.use_config_max_sale_qty",
-        "stock.qty_increments",
-        "small_image"
-      ],
+      "excludeFields": [ "updated_at", "created_at", "attribute_set_id", "status", "visibility", "tier_prices", "options_container", "msrp_display_actual_price_type", "has_options", "stock.manage_stock", "stock.use_config_min_qty", "stock.use_config_notify_stock_qty", "stock.stock_id",  "stock.use_config_backorders", "stock.use_config_enable_qty_inc", "stock.enable_qty_increments", "stock.use_config_manage_stock", "stock.use_config_min_sale_qty", "stock.notify_stock_qty", "stock.use_config_max_sale_qty", "stock.use_config_max_sale_qty", "stock.qty_increments", "small_image"],
       "includeFields": null,
       "filterFieldMapping": {
         "category.name": "category.name.keyword"
       }
     }
   },
-  "usePriceTiers": true,
+  "usePriceTiers": false,
   "boost": {
     "name": 3,
     "category.name": 1,

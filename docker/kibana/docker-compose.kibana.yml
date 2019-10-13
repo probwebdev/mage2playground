@@ -6,7 +6,12 @@ services:
     image: docker.elastic.co/kibana/kibana:${KIBANA_VER}
     depends_on:
       - elasticsearch
+    ports:
+      - 5601
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kibana.entrypoints=web"
+      - "traefik.http.routers.kibana.rule=Host(`kibana.mage2playground.docker`, `www.kibana.mage2playground.docker`)"
+      - "traefik.http.services.kibana.loadbalancer.server.port=5601"
     volumes:
       - ./docker/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
-    ports:
-      - ${KIBANA_PORT}:5601

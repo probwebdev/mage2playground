@@ -4,14 +4,14 @@ Default Magento 2 stack for this project is: Traefik 2.0, Varnish 6.0, Nginx, PH
 
 ## Quick Reference
 ### Project setup
-Copy **.env.dist** to **.env**. Please make sure that ports from env file aren't used by host system. Don't forget to set your user UID-GID so there won't be an issue with file permissions. UID-GID can be changes during build time and runtime.  
+Copy **.env.dist** to **.env**. Please make sure that ports from env file aren't used by host system. Don't forget to set your user UID-GID so there won't be an issue with file permissions. UID-GID can be changes during build time and runtime.     
 Copy **docker/cli/mage2cli.env.dist** to **docker/cli/mage2cli.env**   
 Copy **docker/db/mage2db.env.dist** to **docker/db/mage2db.env**      
 Copy **docker/traefik/traefik.dist.yml** to **docker/traefik/traefik.yml**   
 Copy **docker/nginx/config/mage2playground.conf.dist** to **docker/nginx/config/mage2playground.conf**   
 Copy **docker/elasticsearch/config/elasticsearch.yml.dist** to **docker/elasticsearch/config/elasticsearch.yml**   
 Copy **docker/varnish/config/default.vcl.dist** to **docker/varnish/config/default.vcl**   
-Copy **mage2/auth.json.dist** to **mage2/auth.json** and add generated tokens from [Magento Marketplace](https://marketplace.magento.com/). Steps how to do it can be found [here](https://devdocs.magento.com/guides/v2.3/install-gde/prereq/connect-auth.html)   
+Copy **config/mage2/composer.json**, **config/mage2/composer.lock**, **config/mage2/auth.json** to **/mage2** and add generated tokens from [Magento Marketplace](https://marketplace.magento.com/). Steps how to do it can be found [here](https://devdocs.magento.com/guides/v2.3/install-gde/prereq/connect-auth.html)   
 Create external volume `docker volume create mariadb`   
 Add following lines to **/etc/hosts**:
 ```
@@ -39,7 +39,7 @@ That container have pre-installed **magento** command, **composer** and **n98-ma
 - e.g magento `docker-compose run --rm cli magento cache:clean`   
 - or n98-magerun2 `docker-compose run --rm cli n98-magerun2 sys:info`   
 
-### Install and Run Vue Storefront (postponed until 1.11 release with Elasticsearch 7 support)
+### Install and Run Vue Storefront (release 1.11+)
 #### Setup
 Copy **docker/vuestorefront/mage2vue.env.dist** to **docker/vuestorefront/mage2vue.env**   
 From the Project root run following commands:
@@ -58,12 +58,11 @@ Copy example configuration files:
 - Populate **mage2vue-api/config/local.json** with Magento API tokens like stated in [Docs](https://docs.vuestorefront.io/guide/installation/magento.html#fast-integration)
 - Run `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker/vuestorefront/docker-compose.vue.yml -f docker/kibana/docker-compose.kibana.yml up -d`
 - Go to http://mage2vue.docker in your browser to see initial setup 
-- Import data from Magento to Vue Storefront by running following command inside vue-s8t-api container `yarn mage2vs import` with following `yarn setup`   
-e.g `docker exec mage2playground_vue-s8t-api_1 ash` and run those two commands inside   
+- Import data from Magento to Vue Storefront by running following command inside storefront-api container `yarn mage2vs import` with following `yarn setup`   
+e.g `docker exec mage2playground_storefront-api_1 ash` and run those two commands inside   
 - Go to http://storefront.docker in your browser to see initial setup  
 
-#### Notes   
-At the moment of writing Vue Storefront don't support Elasticsearch 6+   
+#### Notes     
 Native indexer [Magento 2 Data Indexer](https://github.com/DivanteLtd/magento2-vsbridge-indexer)    
 Reviews sync [Magento 2 Review API](https://github.com/DivanteLtd/magento2-review-api) 
 

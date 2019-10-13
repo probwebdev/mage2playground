@@ -59,7 +59,7 @@
       "url": "/de",
       "elasticsearch": {
         "host": "api.storefront.docker/api/catalog",
-        "index": "vue_storefront_magento_1"
+        "index": "vue_storefront_magento_de"
       },
       "msi": {
         "stockId": 2
@@ -89,7 +89,7 @@
       "url": "/it",
       "elasticsearch": {
         "host": "api.storefront.docker/api/catalog",
-        "index": "vue_storefront_magento_1"
+        "index": "vue_storefront_magento_it"
       },
       "msi": {
         "stockId": 2

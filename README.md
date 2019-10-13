@@ -31,8 +31,8 @@ Other services available at address added above.
 
 #### Notes   
 Magento recommend to use Elasticsearch as Catalog Search engine. You can set it up in Admin Dashboard:
-- Stores-Configuration-Catalog-Catalog-Catalog Search  
-- Choose Elasticsearch 5.0+ and **elasticsearch** as hostname  
+- Stores->Configuration->Catalog->Catalog->Catalog Search  
+- Choose Elasticsearch 6.0+ and **elasticsearch** as hostname  
 
 To preform Magento 2 manipulations you can use special container, the one you used above to install Magento.   
 That container have pre-installed **magento** command, **composer** and **n98-magerun2**:   
@@ -48,19 +48,21 @@ From the Project root run following commands:
 - From inside **mage2vue-api** folder run `git clone https://github.com/magento/magento2-sample-data.git var/magento2-sample-data`
 - Add following lines to **/etc/hosts**:   
 ```
-127.0.0.1 storefront.docker
-127.0.0.1 api.storefront.docker
+127.0.0.1 vuestorefront.docker
+127.0.0.1 api.vuestorefront.docker
 ```
 Setup Magento API https://docs.vuestorefront.io/guide/installation/magento.html   
 Copy example configuration files:
 - **docker/vuestorefront/config/vue-storefront.local.json.dist** to **mage2vue/config/local.json**
 - **docker/vuestorefront/config/vue-storefront-api.local.json.dist** to **mage2vue-api/config/local.json**
+- **docker/vuestorefront/docker/Dockerfile** to both **mage2vue/** and **mage2vue-api/**
+- **docker/vuestorefront/docker/vue-storefront/docker-entrypoint.sh** to **mage2vue/**
+- **docker/vuestorefront/docker/vue-storefront-api/docker-entrypoint.sh** to **mage2vue-api/**
 - Populate **mage2vue-api/config/local.json** with Magento API tokens like stated in [Docs](https://docs.vuestorefront.io/guide/installation/magento.html#fast-integration)
 - Run `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker/vuestorefront/docker-compose.vue.yml -f docker/kibana/docker-compose.kibana.yml up -d`
-- Go to http://mage2vue.docker in your browser to see initial setup 
 - Import data from Magento to Vue Storefront by running following command inside storefront-api container `yarn mage2vs import` with following `yarn setup`   
-e.g `docker exec mage2playground_storefront-api_1 ash` and run those two commands inside   
-- Go to http://storefront.docker in your browser to see initial setup  
+e.g `docker exec mage2playground_vsf-api_1 ash` and run those two commands inside   
+- Go to http://vuestorefront.docker in your browser to see initial setup  
 
 #### Notes     
 Native indexer [Magento 2 Data Indexer](https://github.com/DivanteLtd/magento2-vsbridge-indexer)    

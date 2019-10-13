@@ -70,5 +70,7 @@ services:
     image: ${MAGE2CRON_IMAGE}
     depends_on:
       - db
-      - elasticsearch
       - mage2
+      - elasticsearch
+      - rediscache
+      - redissession

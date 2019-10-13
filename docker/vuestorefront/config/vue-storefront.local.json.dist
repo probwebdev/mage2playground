@@ -121,7 +121,7 @@
       "appendStoreCode": true,
       "elasticsearch": {
         "host": "/api/catalog",
-        "index": "vue_storefront_magento_1"
+        "index": "vue_storefront_magento_de"
       },
       "tax": {
         "sourcePriceIncludesTax": false,
@@ -152,7 +152,7 @@
       "appendStoreCode": true,
       "elasticsearch": {
         "host": "/api/catalog",
-        "index": "vue_storefront_magento_1"
+        "index": "vue_storefront_magento_it"
       },
       "tax": {
         "defaultCountry": "IT"

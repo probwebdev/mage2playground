@@ -2,67 +2,77 @@ version: "3"
 
 services:
 
-  storefront:
-    image: ${VUESTOREFRONT_IMAGE}
+  vsf:
+    image: ${VUE_STOREFRONT_IMAGE}
     build:
       context: ${MAGE2VUE_PATH}
-      dockerfile: ./docker/vue-storefront/Dockerfile
+      args:
+        - NODE_VER=${VUE_STOREFRONT_NODE_VER}
+        - VUE_STOREFRONT_ROOT=${VUE_STOREFRONT_ROOT}
     env_file:
       - ${MAGE2VUE_PATH}/docker/vue-storefront/default.env
       - ./docker/vuestorefront/mage2vue.env
+    environment:
+      VUE_STOREFRONT_ROOT: ${VUE_STOREFRONT_ROOT}
+      VUE_STOREFRONT_UID: ${MAGE2_UID}
+      VUE_STOREFRONT_GID: ${MAGE2_GID}
     volumes:
-      - ${MAGE2VUE_PATH}/babel.config.js:/var/www/babel.config.js
-      - ${MAGE2VUE_PATH}/config:/var/www/config
-      - ${MAGE2VUE_PATH}/core:/var/www/core
-      - ${MAGE2VUE_PATH}/ecosystem.json:/var/www/ecosystem.json
-      - ${MAGE2VUE_PATH}/.eslintignore:/var/www/.eslintignore
-      - ${MAGE2VUE_PATH}/.eslintrc.js:/var/www/.eslintrc.js
-      - ${MAGE2VUE_PATH}/lerna.json:/var/www/lerna.json
-      - ${MAGE2VUE_PATH}/tsconfig.json:/var/www/tsconfig.json
-      - ${MAGE2VUE_PATH}/tsconfig-build.json:/var/www/tsconfig-build.json
-      - ${MAGE2VUE_PATH}/shims.d.ts:/var/www/shims.d.ts
-      - ${MAGE2VUE_PATH}/package.json:/var/www/package.json
-      - ${MAGE2VUE_PATH}/src:/var/www/src
-      - ${MAGE2VUE_PATH}/var:/var/www/var
-      - ${MAGE2VUE_PATH}/packages:/var/www/packages
-    tmpfs:
-      - /var/www/dist
+      - ${MAGE2VUE_PATH}/babel.config.js:${VUE_STOREFRONT_ROOT}/app/babel.config.js
+      - ${MAGE2VUE_PATH}/config:${VUE_STOREFRONT_ROOT}/app/config
+      - ${MAGE2VUE_PATH}/core:${VUE_STOREFRONT_ROOT}/app/core
+      - ${MAGE2VUE_PATH}/ecosystem.json:${VUE_STOREFRONT_ROOT}/app/ecosystem.json
+      - ${MAGE2VUE_PATH}/.eslintignore:${VUE_STOREFRONT_ROOT}/app/.eslintignore
+      - ${MAGE2VUE_PATH}/.eslintrc.js:${VUE_STOREFRONT_ROOT}/app/.eslintrc.js
+      - ${MAGE2VUE_PATH}/lerna.json:${VUE_STOREFRONT_ROOT}/app/lerna.json
+      - ${MAGE2VUE_PATH}/tsconfig.json:${VUE_STOREFRONT_ROOT}/app/tsconfig.json
+      - ${MAGE2VUE_PATH}/tsconfig-build.json:${VUE_STOREFRONT_ROOT}/app/tsconfig-build.json
+      - ${MAGE2VUE_PATH}/shims.d.ts:${VUE_STOREFRONT_ROOT}/app/shims.d.ts
+      - ${MAGE2VUE_PATH}/package.json:${VUE_STOREFRONT_ROOT}/app/package.json
+      - ${MAGE2VUE_PATH}/src:${VUE_STOREFRONT_ROOT}/app/src
+      - ${MAGE2VUE_PATH}/var:${VUE_STOREFRONT_ROOT}/app/var
+      - ${MAGE2VUE_PATH}/packages:${VUE_STOREFRONT_ROOT}/app/packages
+      - ${MAGE2VUE_PATH}/dist:${VUE_STOREFRONT_ROOT}/app/dist
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.storefront.entrypoints=web"
-      - "traefik.http.routers.storefront.rule=Host(`storefront.docker`, `www.storefront.docker`)"
+      - "traefik.http.routers.storefront.rule=Host(`vuestorefront.docker`, `www.vuestorefront.docker`)"
       - "traefik.http.services.storefront.loadbalancer.server.port=3000"
     ports:
       - 3000
 
-  storefront-api:
-    image: ${VUESTOREFRONT_API_IMAGE}
+  vsf-api:
+    image: ${VUE_STOREFRONT_API_IMAGE}
     build:
       context: ${MAGE2VUE_API_PATH}
-      dockerfile: ./docker/vue-storefront-api/Dockerfile
+      args:
+        - NODE_VER=${VUE_STOREFRONT_NODE_VER}
+        - VUE_STOREFRONT_ROOT=${VUE_STOREFRONT_ROOT}
     depends_on:
       - elasticsearch
       - rediscache
     env_file:
       - ${MAGE2VUE_API_PATH}/docker/vue-storefront-api/default.env
       - ./docker/vuestorefront/mage2vue.env
+    environment:
+      VUE_STOREFRONT_ROOT: ${VUE_STOREFRONT_ROOT}
+      VUE_STOREFRONT_UID: ${MAGE2_UID}
+      VUE_STOREFRONT_GID: ${MAGE2_GID}
     volumes:
-      - ${MAGE2VUE_API_PATH}/config:/var/www/config
-      - ${MAGE2VUE_API_PATH}/ecosystem.json:/var/www/ecosystem.json
-      - ${MAGE2VUE_API_PATH}/migrations:/var/www/migrations
-      - ${MAGE2VUE_API_PATH}/package.json:/var/www/package.json
-      - ${MAGE2VUE_API_PATH}/babel.config.js:/var/www/babel.config.js
-      - ${MAGE2VUE_API_PATH}/tsconfig.json:/var/www/tsconfig.json
-      - ${MAGE2VUE_API_PATH}/nodemon.json:/var/www/nodemon.json
-      - ${MAGE2VUE_API_PATH}/scripts:/var/www/scripts
-      - ${MAGE2VUE_API_PATH}/src:/var/www/src
-      - ${MAGE2VUE_API_PATH}/var:/var/www/var
-    tmpfs:
-      - /var/www/dist
+      - ${MAGE2VUE_API_PATH}/config:${VUE_STOREFRONT_ROOT}/app/config
+      - ${MAGE2VUE_API_PATH}/ecosystem.json:${VUE_STOREFRONT_ROOT}/app/ecosystem.json
+      - ${MAGE2VUE_API_PATH}/migrations:${VUE_STOREFRONT_ROOT}/app/migrations
+      - ${MAGE2VUE_API_PATH}/package.json:${VUE_STOREFRONT_ROOT}/app/package.json
+      - ${MAGE2VUE_API_PATH}/babel.config.js:${VUE_STOREFRONT_ROOT}/app/babel.config.js
+      - ${MAGE2VUE_API_PATH}/tsconfig.json:${VUE_STOREFRONT_ROOT}/app/tsconfig.json
+      - ${MAGE2VUE_API_PATH}/nodemon.json:${VUE_STOREFRONT_ROOT}/app/nodemon.json
+      - ${MAGE2VUE_API_PATH}/scripts:${VUE_STOREFRONT_ROOT}/app/scripts
+      - ${MAGE2VUE_API_PATH}/src:${VUE_STOREFRONT_ROOT}/app/src
+      - ${MAGE2VUE_API_PATH}/var:${VUE_STOREFRONT_ROOT}/app/var
+      - ${MAGE2VUE_API_PATH}/dist:${VUE_STOREFRONT_ROOT}/app/dist
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.storefront-api.entrypoints=web"
-      - "traefik.http.routers.storefront-api.rule=Host(`api.storefront.docker`, `www.api.storefront.docker`)"
+      - "traefik.http.routers.storefront-api.rule=Host(`api.vuestorefront.docker`, `www.api.vuestorefront.docker`)"
       - "traefik.http.services.storefront-api.loadbalancer.server.port=8080"
     ports:
       - 8080

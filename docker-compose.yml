@@ -5,7 +5,7 @@ services:
   traefik:
     image: traefik:${TRAEFIK_VER}
     ports:
-      - 80:80
+      - 80
       - 8080
 
   varnish:

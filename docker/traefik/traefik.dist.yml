@@ -5,13 +5,14 @@ global:
 entryPoints:
   web:
     address: ":80"
+  db:
+    address: ":3306"
 
 providers:
   docker:
     watch: true
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-    swarmMode: false
 
 log:
   level: INFO

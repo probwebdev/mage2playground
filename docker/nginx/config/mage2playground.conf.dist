@@ -85,7 +85,7 @@ server {
 
       # Remove signature of the static files that is used to overcome the browser cache
       location ~ ^/static/version {
-          rewrite ^/static/(version[^/]+/)?(.*)$ /static/$2 last;
+          rewrite ^/static/(version\d*/)?(.*)$ /static/$2 last;
       }
 
       location ~* \.(ico|jpg|jpeg|png|gif|svg|js|css|swf|eot|ttf|otf|woff|woff2|json)$ {
@@ -94,7 +94,7 @@ server {
           expires +1y;
 
           if (!-f $request_filename) {
-              rewrite ^/static/?(.*)$ /static.php?resource=$1 last;
+              rewrite ^/static/?(.*)$ /static.php?resource=$2 last;
           }
       }
       location ~* \.(zip|gz|gzip|bz2|csv|xml)$ {
@@ -103,11 +103,11 @@ server {
           expires    off;
 
           if (!-f $request_filename) {
-             rewrite ^/static/?(.*)$ /static.php?resource=$1 last;
+             rewrite ^/static/?(.*)$ /static.php?resource=$2 last;
           }
       }
       if (!-f $request_filename) {
-          rewrite ^/static/?(.*)$ /static.php?resource=$1 last;
+          rewrite ^/static/?(.*)$ /static.php?resource=$2 last;
       }
       add_header X-Frame-Options "SAMEORIGIN";
   }
@@ -144,6 +144,12 @@ server {
 
   location /media/import/ {
       deny all;
+  }
+
+  location /errors/ {
+      location ~* \.xml$ {
+          deny all;
+      }
   }
 
   # PHP entry point for main application
@@ -184,7 +190,7 @@ server {
   gzip_vary on;
 
   # Banned locations (only reached if the earlier PHP entry point regexes don't match)
-  location ~* (\.php$|\.htaccess$|\.git) {
+  location ~* (\.php$|\.phtml$|\.htaccess$|\.git) {
       deny all;
   }
 }

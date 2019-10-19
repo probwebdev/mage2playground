@@ -2,7 +2,7 @@
 set -e
 
 # Ensure Project directory exists
-mkdir -p ${VUE_STOREFRONT_ROOT}/app
+mkdir -p /home/node/app
 
 # Get current node user UID-GID
 CURRENT_UID="$(id -u node)"

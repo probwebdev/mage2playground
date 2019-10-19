@@ -39,13 +39,13 @@ That container have pre-installed **magento** command, **composer** and **n98-ma
 - e.g magento `docker-compose run --rm cli magento cache:clean`   
 - or n98-magerun2 `docker-compose run --rm cli n98-magerun2 sys:info`   
 
-### Install and Run Vue Storefront (release 1.11+)
+### Install and Run Vue Storefront (VSF 1.11+)
 #### Setup
-Copy **docker/vuestorefront/mage2vue.env.dist** to **docker/vuestorefront/mage2vue.env**   
+Copy **docker/vuestorefront/mage2vsf.env.dist** to **docker/vuestorefront/mage2vsf.env**   
 From the Project root run following commands:
-- `git clone https://github.com/DivanteLtd/vue-storefront.git mage2vue` and checkout to latest stable release
-- `git clone https://github.com/DivanteLtd/vue-storefront-api.git mage2vue-api` and checkout to latest stable release
-- From inside **mage2vue-api** folder run `git clone https://github.com/magento/magento2-sample-data.git var/magento2-sample-data`
+- `git clone https://github.com/DivanteLtd/vue-storefront.git mage2vsf` and checkout to latest stable release
+- `git clone https://github.com/DivanteLtd/vue-storefront-api.git mage2vsf-api` and checkout to latest stable release
+- From inside **mage2vsf-api** folder run `git clone https://github.com/magento/magento2-sample-data.git var/magento2-sample-data`
 - Add following lines to **/etc/hosts**:   
 ```
 127.0.0.1 vuestorefront.docker
@@ -53,12 +53,12 @@ From the Project root run following commands:
 ```
 Setup Magento API https://docs.vuestorefront.io/guide/installation/magento.html   
 Copy example configuration files:
-- **docker/vuestorefront/config/vue-storefront.local.json.dist** to **mage2vue/config/local.json**
-- **docker/vuestorefront/config/vue-storefront-api.local.json.dist** to **mage2vue-api/config/local.json**
-- **docker/vuestorefront/docker/Dockerfile** to both **mage2vue/** and **mage2vue-api/**
-- **docker/vuestorefront/docker/vue-storefront/docker-entrypoint.sh** to **mage2vue/**
-- **docker/vuestorefront/docker/vue-storefront-api/docker-entrypoint.sh** to **mage2vue-api/**
-- Populate **mage2vue-api/config/local.json** with Magento API tokens like stated in [Docs](https://docs.vuestorefront.io/guide/installation/magento.html#fast-integration)
+- **docker/vuestorefront/config/vue-storefront.local.json.dist** to **mage2vsf/config/local.json**
+- **docker/vuestorefront/config/vue-storefront-api.local.json.dist** to **mage2vsf-api/config/local.json**
+- **docker/vuestorefront/docker/Dockerfile** to both **mage2vsf/** and **mage2vsf-api/**
+- **docker/vuestorefront/docker/vue-storefront/docker-entrypoint.sh** to **mage2vsf/**
+- **docker/vuestorefront/docker/vue-storefront-api/docker-entrypoint.sh** to **mage2vsf-api/**
+- Populate **mage2vsf-api/config/local.json** with Magento API tokens like stated in [Docs](https://docs.vuestorefront.io/guide/installation/magento.html#fast-integration)
 - Run `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker/vuestorefront/docker-compose.vue.yml -f docker/kibana/docker-compose.kibana.yml up -d`
 - Import data from Magento to Vue Storefront by running following command inside storefront-api container `yarn mage2vs import` with following `yarn setup`   
 e.g `docker exec mage2playground_vsf-api_1 ash` and run those two commands inside   

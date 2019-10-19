@@ -2,7 +2,14 @@
   "server": {
     "host": "localhost",
     "port": 8080,
-    "searchEngine": "elasticsearch"
+    "searchEngine": "elasticsearch",
+    "useOutputCacheTagging": false,
+    "useOutputCache": false,
+    "outputCacheDefaultTtl": 86400,
+    "availableCacheTags": ["P", "C", "T", "A", "product", "category", "attribute", "taxrule"],
+    "invalidateCacheKey": "aeSu7aip",
+    "invalidateCacheForwarding": false,
+    "invalidateCacheForwardUrl": "http://localhost:3000/invalidate?key=aeSu7aip&tag="
   },
   "orders": {
     "useServerQueue": false
@@ -14,21 +21,23 @@
     "host": "elasticsearch",
     "port": 9200,
     "protocol": "http",
-    "user": "elastic",
-    "password": "elastic",
     "min_score": 0.01,
     "indices": [
-      "vue_storefront_magento_1"
+      "vue_storefront_catalog",
+      "vue_storefront_catalog_1",
+      "vue_storefront_catalog_de",
+      "vue_storefront_catalog_it"
     ],
     "indexTypes": [
       "product",
       "category",
-      "cms",
+      "cms_block",
+      "cms_page",
       "attribute",
       "taxrule",
       "review"
     ],
-    "apiVersion": "6.8"
+    "apiVersion": "7.1"
   },
   "redis": {
     "host": "rediscache",
@@ -59,7 +68,7 @@
       "url": "/de",
       "elasticsearch": {
         "host": "api.storefront.docker/api/catalog",
-        "index": "vue_storefront_magento_de"
+        "index": "vue_storefront_catalog_de"
       },
       "msi": {
         "stockId": 2
@@ -67,8 +76,12 @@
       "tax": {
         "defaultCountry": "DE",
         "defaultRegion": "",
+        "deprecatedPriceFieldsSupport": true,
         "calculateServerSide": true,
-        "sourcePriceIncludesTax": false
+        "sourcePriceIncludesTax": false,
+        "finalPriceIncludesTax": true,
+        "userGroupId": null,
+        "useOnlyDefaultUserGroupId": false
       },
       "i18n": {
         "fullCountryName": "Germany",
@@ -89,7 +102,7 @@
       "url": "/it",
       "elasticsearch": {
         "host": "api.storefront.docker/api/catalog",
-        "index": "vue_storefront_magento_it"
+        "index": "vue_storefront_catalog_it"
       },
       "msi": {
         "stockId": 2
@@ -98,7 +111,11 @@
         "defaultCountry": "IT",
         "defaultRegion": "",
         "calculateServerSide": true,
-        "sourcePriceIncludesTax": false
+        "sourcePriceIncludesTax": false,
+        "deprecatedPriceFieldsSupport": true,
+        "finalPriceIncludesTax": true,
+        "userGroupId": null,
+        "useOnlyDefaultUserGroupId": false
       },
       "i18n": {
         "fullCountryName": "Italy",
@@ -124,7 +141,14 @@
     "alwaysSyncPlatformPricesOver": false,
     "usePlatformTotals": true,
     "setConfigurableProductOptions": true,
-    "sourcePriceIncludesTax": false
+    "sourcePriceIncludesTax": false,
+    "deprecatedPriceFieldsSupport": true,
+    "finalPriceIncludesTax": true,
+    "userGroupId": null,
+    "useOnlyDefaultUserGroupId": false
+  },
+  "review": {
+    "defaultReviewStatus": 2
   },
   "bodyLimit": "100kb",
   "corsHeaders": [
@@ -136,13 +160,15 @@
     "example-magento-api",
     "cms-data",
     "mail-service",
-    "example-processor"
+    "example-processor",
+    "elastic-stock"
   ],
   "extensions": {
     "mailchimp": {
       "listId": "e06875a7e1",
       "apiKey": "a9a3318ea7d30f5c5596bd4a78ae0985-us3",
-      "apiUrl": "https://us3.api.mailchimp.com/3.0"
+      "apiUrl": "https://us3.api.mailchimp.com/3.0",
+      "userStatus": "subscribed"
     },
     "mailService": {
       "transport": {
@@ -208,7 +234,22 @@
       "queue": 2,
       "process": 4
     },
-    "simd": true
+    "simd": true,
+    "caching": {
+      "active": false,
+      "type": "file",
+      "file": {
+        "path": "/tmp/vue-storefront-api"
+      },
+      "google-cloud-storage": {
+        "libraryOptions": {},
+        "bucket": "",
+        "prefix": "vue-storefront-api/image-cache"
+      }
+    },
+    "action": {
+      "type": "local"
+    }
   },
   "entities": {
     "category": {
@@ -233,7 +274,7 @@
         "category.name": "category.name.keyword"
       }
     }
-  },
+    },
   "usePriceTiers": false,
   "boost": {
     "name": 3,

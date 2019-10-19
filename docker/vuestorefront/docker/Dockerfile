@@ -2,7 +2,7 @@ ARG NODE_VER=10-alpine
 
 FROM node:$NODE_VER
 
-ARG VUE_STOREFRONT_ROOT=/home/node
+WORKDIR /home/node
 
 RUN apk add --no-cache --virtual .runtime \
       shadow \
@@ -13,8 +13,8 @@ RUN apk add --no-cache --virtual .runtime \
 
 USER node
 
-RUN mkdir $VUE_STOREFRONT_ROOT/app
-WORKDIR $VUE_STOREFRONT_ROOT/app
+RUN mkdir /home/node/app
+WORKDIR /home/node/app
 
 COPY --chown=node:node package.json yarn.lock ./
 

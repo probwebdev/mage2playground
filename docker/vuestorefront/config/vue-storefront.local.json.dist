@@ -58,7 +58,7 @@
   "elasticsearch": {
     "httpAuth": "",
     "host": "/api/catalog",
-    "index": "vue_storefront_magento_1",
+    "index": "vue_storefront_catalog_1",
     "min_score": 0.02,
     "csrTimeout": 5000,
     "ssrTimeout": 1000,
@@ -121,7 +121,7 @@
       "appendStoreCode": true,
       "elasticsearch": {
         "host": "/api/catalog",
-        "index": "vue_storefront_magento_de"
+        "index": "vue_storefront_catalog_de"
       },
       "tax": {
         "sourcePriceIncludesTax": false,
@@ -152,7 +152,7 @@
       "appendStoreCode": true,
       "elasticsearch": {
         "host": "/api/catalog",
-        "index": "vue_storefront_magento_it"
+        "index": "vue_storefront_catalog_it"
       },
       "tax": {
         "defaultCountry": "IT"
@@ -311,6 +311,7 @@
     "setupVariantByAttributeCode": true,
     "endpoint": "/api/product",
     "defaultFilters": ["color", "size", "price", "erin_recommends"],
+    "systemFilterNames": ["sort"],
     "maxFiltersQuerySize": 999,
     "routerFiltersSource": "query",
     "filterFieldMapping": {
@@ -381,7 +382,7 @@
       "claims": "LOCALSTORAGE",
       "syncTasks": "LOCALSTORAGE",
       "ordersHistory": "LOCALSTORAGE",
-      "checkoutFieldValues": "LOCALSTORAGE"
+      "checkout": "LOCALSTORAGE"
     }
   },
   "reviews": {
@@ -390,7 +391,7 @@
   "users": {
     "autoRefreshTokens": true,
     "endpoint": "/api/user",
-    "history_endpoint": "/api/user/order-history?token={{token}}",
+    "history_endpoint": "/api/user/order-history?token={{token}}&pageSize={{pageSize}}&currentPage={{currentPage}}",
     "resetPassword_endpoint": "/api/user/reset-password",
     "changePassword_endpoint": "/api/user/change-password?token={{token}}",
     "login_endpoint": "/api/user/login",

@@ -1,5 +1,5 @@
 ARG COMPOSER_VER=1.8
-ARG PHP_CLI_VER=7.2-cli-alpine
+ARG PHP_CLI_VER=7.3-cli-alpine
 
 # Composer
 FROM composer:$COMPOSER_VER as composer
@@ -7,7 +7,7 @@ FROM composer:$COMPOSER_VER as composer
 # Mage 2 Stage
 FROM php:$PHP_CLI_VER
 
-ARG PHP_REDIS_VER=4.3.0
+ARG PHP_REDIS_VER=5.0.2
 
 WORKDIR /var/www/html
 

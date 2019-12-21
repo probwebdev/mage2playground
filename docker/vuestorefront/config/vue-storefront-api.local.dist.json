@@ -9,7 +9,7 @@
     "availableCacheTags": ["P", "C", "T", "A", "product", "category", "attribute", "taxrule"],
     "invalidateCacheKey": "aeSu7aip",
     "invalidateCacheForwarding": false,
-    "invalidateCacheForwardUrl": "http://localhost:3000/invalidate?key=aeSu7aip&tag="
+    "invalidateCacheForwardUrl": "http://api.vuestorefront.docker/invalidate?key=aeSu7aip&tag="
   },
   "orders": {
     "useServerQueue": false
@@ -24,7 +24,6 @@
     "min_score": 0.01,
     "indices": [
       "vue_storefront_catalog",
-      "vue_storefront_catalog_1",
       "vue_storefront_catalog_de",
       "vue_storefront_catalog_it"
     ],
@@ -67,7 +66,7 @@
       "name": "German Store",
       "url": "/de",
       "elasticsearch": {
-        "host": "api.storefront.docker/api/catalog",
+        "host": "api.vuestorefront.docker/api/catalog",
         "index": "vue_storefront_catalog_de"
       },
       "msi": {
@@ -101,7 +100,7 @@
       "name": "Italian Store",
       "url": "/it",
       "elasticsearch": {
-        "host": "api.storefront.docker/api/catalog",
+        "host": "api.vuestorefront.docker/api/catalog",
         "index": "vue_storefront_catalog_it"
       },
       "msi": {

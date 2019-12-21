@@ -1,4 +1,4 @@
-ARG NODE_VER=10-alpine
+ARG NODE_VER=12-alpine
 
 FROM node:$NODE_VER
 

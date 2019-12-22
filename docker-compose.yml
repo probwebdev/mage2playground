@@ -44,7 +44,7 @@ services:
       - 6379
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_VER}
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.6
     depends_on:
       - db
     ports:

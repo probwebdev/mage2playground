@@ -50,7 +50,7 @@
   },
   "graphql":{
     "host": "api.vuestorefront.docker",
-    "port": 8080
+    "port": 80
   },
   "api": {
     "url": "http://api.vuestorefront.docker"
@@ -58,7 +58,7 @@
   "elasticsearch": {
     "httpAuth": "",
     "host": "/api/catalog",
-    "index": "vue_storefront_catalog_1",
+    "index": "vue_storefront_catalog",
     "min_score": 0.02,
     "csrTimeout": 5000,
     "ssrTimeout": 1000,

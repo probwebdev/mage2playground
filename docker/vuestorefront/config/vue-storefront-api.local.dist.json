@@ -9,7 +9,7 @@
     "availableCacheTags": ["P", "C", "T", "A", "product", "category", "attribute", "taxrule"],
     "invalidateCacheKey": "aeSu7aip",
     "invalidateCacheForwarding": false,
-    "invalidateCacheForwardUrl": "http://api.vuestorefront.docker/invalidate?key=aeSu7aip&tag="
+    "invalidateCacheForwardUrl": "http://vuestorefront.docker/invalidate?key=aeSu7aip&tag="
   },
   "orders": {
     "useServerQueue": false
@@ -18,7 +18,7 @@
     "excludeDisabledProducts": false
   },
   "elasticsearch": {
-    "host": "elasticsearch",
+    "host": "elasticsearch7",
     "port": 9200,
     "protocol": "http",
     "min_score": 0.01,
@@ -63,6 +63,7 @@
       "storeCode": "de",
       "disabled": false,
       "storeId": 3,
+      "websiteId": 1,
       "name": "German Store",
       "url": "/de",
       "elasticsearch": {
@@ -97,6 +98,7 @@
       "storeCode": "it",
       "disabled": false,
       "storeId": 4,
+      "websiteId": 1,
       "name": "Italian Store",
       "url": "/it",
       "elasticsearch": {
@@ -142,7 +144,7 @@
     "setConfigurableProductOptions": true,
     "sourcePriceIncludesTax": false,
     "deprecatedPriceFieldsSupport": true,
-    "finalPriceIncludesTax": true,
+    "finalPriceIncludesTax": false,
     "userGroupId": null,
     "useOnlyDefaultUserGroupId": false
   },
@@ -273,7 +275,7 @@
         "category.name": "category.name.keyword"
       }
     }
-    },
+  },
   "usePriceTiers": false,
   "boost": {
     "name": 3,

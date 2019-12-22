@@ -45,7 +45,7 @@ services:
       args:
         - NODE_VER=${VUE_STOREFRONT_NODE_VER}
     depends_on:
-      - elasticsearch
+      - elasticsearch7
       - rediscache
     env_file:
       - ${MAGE2VSF_API_PATH}/docker/vue-storefront-api/default.env
@@ -72,3 +72,23 @@ services:
       - "traefik.http.services.vsf-api.loadbalancer.server.port=8080"
     ports:
       - 8080
+
+  elasticsearch7:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VUE_STOREFRONT_ES_VER}
+    ports:
+      - 9200
+      - 9300
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.elasticsearch.entrypoints=web"
+      - "traefik.http.routers.elasticsearch.rule=Host(`elastic.vuestorefront.docker`, `www.elastic.vuestorefront.docker`)"
+      - "traefik.http.services.elasticsearch.loadbalancer.server.port=9200"
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - elastic7-data:/usr/share/elasticsearch/data
+    restart: on-failure
+
+volumes:
+  elastic7-data:

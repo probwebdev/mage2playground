@@ -1,6 +1,7 @@
 # Magento 2 Playground   
+**NOTE**: This is not a _one click install_ and requires additional setup.   
 Dev environment to play with Magento 2, Vue Storefront, PWA Studio   
-Default Magento 2 stack for this project is: Traefik 2.0, Varnish 6.0, Nginx, PHP 7.3, MariaDB 10.2, Elasticsearch 6.8, Redis 5
+Default Magento 2 stack for this project is: Traefik 2.1, Varnish 6.0, Nginx, PHP 7.3, MariaDB 10.2, Elasticsearch 6.8, Redis 5
 
 ## Quick Reference
 ### Project setup
@@ -22,7 +23,7 @@ Add following lines to **/etc/hosts**:
 ```
 
 ### Install and Run Magento 2
-From the Project root run command `docker-compose run --rm cli mage2install`   
+From the Project root run command `docker-compose run --rm cli mage2install.sh`   
 When previous step is finished run `docker-compose up -d` to start Magento 2 stack   
 Optionally you can add Kibana instance by using `docker-compose.kibana.yml`   
 e.g `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker/kibana/docker-compose.kibana.yml up -d`   
@@ -50,6 +51,7 @@ From the Project root run following commands:
 ```
 127.0.0.1 vuestorefront.docker
 127.0.0.1 api.vuestorefront.docker
+127.0.0.1 elastic.vuestorefront.docker
 ```
 Setup Magento API https://docs.vuestorefront.io/guide/installation/magento.html   
 Copy example configuration files:
@@ -60,8 +62,8 @@ Copy example configuration files:
 - **docker/vuestorefront/docker/vue-storefront-api/docker-entrypoint.sh** to **mage2vsf-api/**
 - Populate **mage2vsf-api/config/local.json** with Magento API tokens like stated in [Docs](https://docs.vuestorefront.io/guide/installation/magento.html#fast-integration)
 - Run `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker/vuestorefront/docker-compose.vue.yml -f docker/kibana/docker-compose.kibana.yml up -d`
-- Import data from Magento to Vue Storefront by running following command inside storefront-api container `yarn mage2vs import` with following `yarn setup`   
-e.g `docker exec mage2playground_vsf-api_1 ash` and run those two commands inside   
+- Import data from Magento to Vue Storefront by running following command inside storefront-api container `yarn mage2vs import` with following `yarn setup` or read VSF API docs   
+e.g `docker exec -it mage2playground_vsf-api_1 ash` and run those two commands inside   
 - Go to http://vuestorefront.docker in your browser to see initial setup  
 
 #### Notes     

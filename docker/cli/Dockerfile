@@ -1,4 +1,4 @@
-ARG COMPOSER_VER=1.8
+ARG COMPOSER_VER=1.9
 ARG PHP_CLI_VER=7.3-cli-alpine
 
 # Composer
@@ -69,7 +69,7 @@ COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 && chmod +x /usr/local/bin/n98-magerun2
 
 RUN chmod +x /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/mage2install
+RUN chmod +x /usr/local/bin/mage2install.sh
 
 ENV MAGENTO_ROOT /var/www/html
 ENV COMPOSER_HOME /var/www/html/var/composer_home

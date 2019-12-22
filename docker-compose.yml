@@ -1,0 +1,76 @@
+version: "3"
+
+services:
+
+  traefik:
+    image: traefik:${TRAEFIK_VER}
+    ports:
+      - 80
+      - 8080
+
+  varnish:
+    image: varnish:${VARNISH_VER}
+    depends_on:
+      - nginx
+    ports:
+      - 80
+
+  nginx:
+    image: nginx:${NGINX_VER}
+    depends_on:
+      - mage2
+    ports:
+      - 80
+
+  db:
+    image: mariadb:${DB_VER}
+    ports:
+      - 3306
+
+  rediscache:
+    image: redis:${REDIS_VER}
+    depends_on:
+      - db
+      - mage2
+    ports:
+      - 6379
+
+  redissession:
+    image: redis:${REDIS_VER}
+    depends_on:
+      - db
+      - mage2
+    ports:
+      - 6379
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.6
+    depends_on:
+      - db
+    ports:
+      - 9200
+      - 9300
+
+  mage2:
+    image: ${MAGE2FPM_IMAGE}
+    depends_on:
+      - db
+    ports:
+      - 9000
+
+  cli:
+    image: ${MAGE2CLI_IMAGE}
+    depends_on:
+      - db
+      - rediscache
+      - redissession
+      - elasticsearch
+
+  cron:
+    image: ${MAGE2CRON_IMAGE}
+    depends_on:
+      - db
+      - mage2
+      - elasticsearch
+      - rediscache
+      - redissession

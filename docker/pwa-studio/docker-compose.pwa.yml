@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+
+  pwa-studio:
+    image: ${PWA_STUDIO_IMAGE}
+    build:
+      context: ${MAGE2PWA_PATH}
+      args:
+        - NODE_VER=${PWA_STUDIO_NODE_VER}
+        - PWA_STUDIO_ROOT=${PWA_STUDIO_ROOT}
+    env_file:
+      - ./docker/pwa-studio/mage2pwa.env
+    environment:
+      PWA_STUDIO_ROOT: ${PWA_STUDIO_ROOT}
+      PWA_STUDIO_UID: ${MAGE2_UID}
+      PWA_STUDIO_GID: ${MAGE2_GID}
+    depends_on:
+      - nginx
+    volumes:
+      - ${MAGE2PWA_PATH}/packages/peregrine/scripts:${PWA_STUDIO_ROOT}/app/packages/peregrine/scripts
+      - ${MAGE2PWA_PATH}/packages/peregrine/lib:${PWA_STUDIO_ROOT}/app/packages/peregrine/lib
+      - ${MAGE2PWA_PATH}/packages/pwa-buildpack/lib:${PWA_STUDIO_ROOT}/app/packages/pwa-buildpack/lib
+      - ${MAGE2PWA_PATH}/packages/pwa-buildpack/bin:${PWA_STUDIO_ROOT}/app/packages/pwa-buildpack/bin
+      - ${MAGE2PWA_PATH}/packages/upward-js/lib:${PWA_STUDIO_ROOT}/app/packages/upward-js/lib
+      - ${MAGE2PWA_PATH}/packages/venia-concept/src:${PWA_STUDIO_ROOT}/app/packages/venia-concept/src
+      - ${MAGE2PWA_PATH}/packages/venia-concept/static:${PWA_STUDIO_ROOT}/app/packages/venia-concept/static
+      - ${MAGE2PWA_PATH}/packages/venia-ui/.storybook:${PWA_STUDIO_ROOT}/app/packages/venia-ui/.storybook
+      - ${MAGE2PWA_PATH}/packages/venia-ui/lib:${PWA_STUDIO_ROOT}/app/packages/venia-ui/lib
+      - ${MAGE2PWA_PATH}/packages/venia-ui/templates:${PWA_STUDIO_ROOT}/app/packages/venia-ui/templates
+      - ./docker/pwa-studio/mage2pwa.env:${PWA_STUDIO_ROOT}/app/packages/venia-concept/.env
+    ports:
+      - 3001:3001
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pwa-studio.entrypoints=web"
+      - "traefik.http.routers.pwa-studio.rule=Host(`venia.docker`, `www.venia.docker`)"
+      - "traefik.http.services.pwa-studio.loadbalancer.server.port=3001"

@@ -1,0 +1,94 @@
+version: "3"
+
+services:
+
+  vsf:
+    image: ${VUE_STOREFRONT_IMAGE}
+    build:
+      context: ${MAGE2VSF_PATH}
+      args:
+        - NODE_VER=${VUE_STOREFRONT_NODE_VER}
+    env_file:
+      - ${MAGE2VSF_PATH}/docker/vue-storefront/default.env
+      - ./docker/vuestorefront/mage2vsf.env
+    environment:
+      VUE_STOREFRONT_UID: ${MAGE2_UID}
+      VUE_STOREFRONT_GID: ${MAGE2_GID}
+    volumes:
+      - ${MAGE2VSF_PATH}/babel.config.js:/home/node/app/babel.config.js
+      - ${MAGE2VSF_PATH}/config:/home/node/app/config
+      - ${MAGE2VSF_PATH}/core:/home/node/app/core
+      - ${MAGE2VSF_PATH}/ecosystem.json:/home/node/app/ecosystem.json
+      - ${MAGE2VSF_PATH}/.eslintignore:/home/node/app/.eslintignore
+      - ${MAGE2VSF_PATH}/.eslintrc.js:/home/node/app/.eslintrc.js
+      - ${MAGE2VSF_PATH}/lerna.json:/home/node/app/lerna.json
+      - ${MAGE2VSF_PATH}/tsconfig.json:/home/node/app/tsconfig.json
+      - ${MAGE2VSF_PATH}/tsconfig-build.json:/home/node/app/tsconfig-build.json
+      - ${MAGE2VSF_PATH}/shims.d.ts:/home/node/app/shims.d.ts
+      - ${MAGE2VSF_PATH}/package.json:/home/node/app/package.json
+      - ${MAGE2VSF_PATH}/src:/home/node/app/src
+      - ${MAGE2VSF_PATH}/var:/home/node/app/var
+      - ${MAGE2VSF_PATH}/packages:/home/node/app/packages
+      - ${MAGE2VSF_PATH}/dist:/home/node/app/dist
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vsf.entrypoints=web"
+      - "traefik.http.routers.vsf.rule=Host(`vuestorefront.docker`, `www.vuestorefront.docker`)"
+      - "traefik.http.services.vsf.loadbalancer.server.port=3000"
+    ports:
+      - 3000
+
+  vsf-api:
+    image: ${VUE_STOREFRONT_API_IMAGE}
+    build:
+      context: ${MAGE2VSF_API_PATH}
+      args:
+        - NODE_VER=${VUE_STOREFRONT_NODE_VER}
+    depends_on:
+      - elasticsearch7
+      - rediscache
+    env_file:
+      - ${MAGE2VSF_API_PATH}/docker/vue-storefront-api/default.env
+      - ./docker/vuestorefront/mage2vsf.env
+    environment:
+      VUE_STOREFRONT_UID: ${MAGE2_UID}
+      VUE_STOREFRONT_GID: ${MAGE2_GID}
+    volumes:
+      - ${MAGE2VSF_API_PATH}/config:/home/node/app/config
+      - ${MAGE2VSF_API_PATH}/ecosystem.json:/home/node/app/ecosystem.json
+      - ${MAGE2VSF_API_PATH}/migrations:/home/node/app/migrations
+      - ${MAGE2VSF_API_PATH}/package.json:/home/node/app/package.json
+      - ${MAGE2VSF_API_PATH}/babel.config.js:/home/node/app/babel.config.js
+      - ${MAGE2VSF_API_PATH}/tsconfig.json:/home/node/app/tsconfig.json
+      - ${MAGE2VSF_API_PATH}/nodemon.json:/home/node/app/nodemon.json
+      - ${MAGE2VSF_API_PATH}/scripts:/home/node/app/scripts
+      - ${MAGE2VSF_API_PATH}/src:/home/node/app/src
+      - ${MAGE2VSF_API_PATH}/var:/home/node/app/var
+      - ${MAGE2VSF_API_PATH}/dist:/home/node/app/dist
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vsf-api.entrypoints=web"
+      - "traefik.http.routers.vsf-api.rule=Host(`api.vuestorefront.docker`, `www.api.vuestorefront.docker`)"
+      - "traefik.http.services.vsf-api.loadbalancer.server.port=8080"
+    ports:
+      - 8080
+
+  elasticsearch7:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VUE_STOREFRONT_ES_VER}
+    ports:
+      - 9200
+      - 9300
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.elasticsearch.entrypoints=web"
+      - "traefik.http.routers.elasticsearch.rule=Host(`elastic.vuestorefront.docker`, `www.elastic.vuestorefront.docker`)"
+      - "traefik.http.services.elasticsearch.loadbalancer.server.port=9200"
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - elastic7-data:/usr/share/elasticsearch/data
+    restart: on-failure
+
+volumes:
+  elastic7-data:

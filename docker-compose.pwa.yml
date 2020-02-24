@@ -10,7 +10,7 @@ services:
         - NODE_VER=${PWA_STUDIO_NODE_VER}
         - PWA_STUDIO_ROOT=${PWA_STUDIO_ROOT}
     env_file:
-      - ./docker/pwa-studio/mage2pwa.env
+      - ./config/venia/mage2pwa.env
     environment:
       PWA_STUDIO_ROOT: ${PWA_STUDIO_ROOT}
       PWA_STUDIO_UID: ${MAGE2_UID}
@@ -28,9 +28,7 @@ services:
       - ${MAGE2PWA_PATH}/packages/venia-ui/.storybook:${PWA_STUDIO_ROOT}/app/packages/venia-ui/.storybook
       - ${MAGE2PWA_PATH}/packages/venia-ui/lib:${PWA_STUDIO_ROOT}/app/packages/venia-ui/lib
       - ${MAGE2PWA_PATH}/packages/venia-ui/templates:${PWA_STUDIO_ROOT}/app/packages/venia-ui/templates
-      - ./docker/pwa-studio/mage2pwa.env:${PWA_STUDIO_ROOT}/app/packages/venia-concept/.env
-    ports:
-      - 3001:3001
+      - ./config/venia/mage2pwa.env:${PWA_STUDIO_ROOT}/app/packages/venia-concept/.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pwa-studio.entrypoints=web"

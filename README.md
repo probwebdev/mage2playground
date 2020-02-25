@@ -13,7 +13,7 @@ Copy **config/nginx/mage2playground.dist.nginx** to **config/nginx/mage2playgrou
 Copy **config/elasticsearch/elasticsearch.dist.yml** to **config/elasticsearch/elasticsearch.yml**   
 Copy **config/varnish/default.vcl.dist** to **config/varnish/default.vcl**   
 Copy **config/mage2/composer.json**, **config/mage2/composer.lock**, **config/mage2/auth.json** to **/mage2** and add generated tokens from [Magento Marketplace](https://marketplace.magento.com/). Steps how to do it can be found [here](https://devdocs.magento.com/guides/v2.3/install-gde/prereq/connect-auth.html)   
-Create external volume `docker volume create mariadb`   
+Create external volume `docker volume create mariadb-data`   
 Add following lines to **/etc/hosts**:
 ```
 127.0.0.1 mage2playground.docker
@@ -26,7 +26,7 @@ Add following lines to **/etc/hosts**:
 From the Project root run command `docker-compose run --rm cli mage2install.sh`   
 When previous step is finished run `docker-compose up -d` to start Magento 2 stack   
 Optionally you can add Kibana instance by using `docker-compose.kibana.yml`   
-e.g `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.kibana.yml up -d`   
+e.g `docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d`   
 Open your browser and go to http://mage2playground.docker. To access admin dashboard go to **/admin** page. Default creds are _admin/admin123_ (can be changed in mage2cli.env file before installation).
 Other services available at address added above.   
 
@@ -36,7 +36,7 @@ Magento recommend to use Elasticsearch as Catalog Search engine. You can set it 
 - Choose Elasticsearch 6.0+ and **elasticsearch** as hostname  
 
 To preform Magento 2 manipulations you can use special container, the one you used above to install Magento.   
-That container have pre-installed **magento** command, **composer** and **n98-magerun2** and can be accessed either while project is active via `docker exec`, either as a standalone container:   
+That container have pre-installed **magento** command, **composer** and **n98-magerun2** and can be accessed either while project is active via `docker exec -itu magento mage2playground_cli_1 <command>`, either as a standalone container:   
 - e.g magento `docker-compose run --rm cli magento cache:clean`   
 - or n98-magerun2 `docker-compose run --rm cli n98-magerun2 sys:info`   
 
@@ -44,7 +44,7 @@ That container have pre-installed **magento** command, **composer** and **n98-ma
 #### Setup
 Copy **config/vsf/mage2vsf.dist.env** to **config/vsf/mage2vsf.env**   
 From the `project` dir run following commands:
-- `git clone https://github.com/DivanteLtd/vue-storefront.git mage2vsf` and checkout to latest stable release
+- `git clone https://github.com/DivanteLtd/vue-storefront.git mage2vsf` and checkout to latest stable release (git checkout tags/v1.11.1 -b v1.11.1)
 - `git clone https://github.com/DivanteLtd/vue-storefront-api.git mage2vsf-api` and checkout to latest stable release
 - From inside **project/mage2vsf-api** folder run `git clone https://github.com/magento/magento2-sample-data.git var/magento2-sample-data`
 - Add following lines to **/etc/hosts**:   
@@ -61,10 +61,10 @@ Copy example configuration files:
 - **docker/vsf/vue-storefront/docker-entrypoint.sh** to **project/mage2vsf/**
 - **docker/vsf/vue-storefront-api/docker-entrypoint.sh** to **project/mage2vsf-api/**
 - Populate **project/mage2vsf-api/config/local.json** with Magento API tokens like stated in [Docs](https://docs.vuestorefront.io/guide/installation/magento.html#fast-integration)
-- Run `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.vue.yml -f docker-compose.kibana.yml up -d`
-- Import data from Magento to Vue Storefront by running following command inside storefront-api container `yarn mage2vs import` with following `yarn setup` or read VSF API docs   
+- Run `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f compose/docker-compose.vsf.yml up -d`
+- Import data from Magento to Vue Storefront by running proper commands inside storefront-api container (read https://docs.vuestorefront.io or project github). Probably you should run something like `yarn restore7 && yarn migrate && yarn mage2vs import`   
 e.g `docker exec -it mage2playground_vsf-api_1 ash` and run those two commands inside   
-- Go to http://vuestorefront.docker in your browser to see initial setup  
+- Go to http://vuestorefront.docker in your docker-compose.vsf.ymlbrowser to see initial setup  
 
 #### Notes     
 Native indexer [Magento 2 Data Indexer](https://github.com/DivanteLtd/magento2-vsbridge-indexer)    
@@ -72,15 +72,16 @@ Reviews sync [Magento 2 Review API](https://github.com/DivanteLtd/magento2-revie
 
 ### Install and Run PWA Studio
 **NOTE**: Before deploying PWA Studio you should completely remove Magento Sample Data and use instead [Venia Sample Data](https://magento-research.github.io/pwa-studio/venia-pwa-concept/install-sample-data/)   
-Copy **config/venia/mage2pwa.dist.env** to **config/venia/mage2pwa.env**   
+Copy **config/venia/mage2venia.dist.env** to **config/venia/mage2venia.env**   
 From the `project` dir run following commands:
-- `https://github.com/magento-research/pwa-studio.git mage2pwa` and checkout to latest stable release
-- Update `mage2pwa/packages/venia-concept/deployVeniaSampleData.sh` script with proper github url `githubBaseUrl='https://github.com/PMET-public'`. You can run it inside **cli** container to deploy sample data but don't forget to mount it as volume(refer to docker/pwa-studio/docker-compose.pwa.yml)
-- Copy from `docker/venia` **Dockerfile** and **pwa-studio.sh** into cloned `mage2pwa` dir (replace default Dockerfile)
+- `https://github.com/magento-research/pwa-studio.git mage2venia` and checkout to latest stable release
+- Update `mage2venia/packages/venia-concept/deployVeniaSampleData.sh` script with proper github url `githubBaseUrl='https://github.com/PMET-public'`. You can run it inside **cli** container to deploy sample data but don't forget to mount it as volume(refer to compose/docker-compose.venia.yml)
+- Copy from `docker/venia` **venia.Dockerfile** and **pwa-studio.sh** into cloned `mage2venia` dir (replace default Dockerfile)
 - Add following line to **/etc/hosts**:   
 ```
 127.0.0.1 venia.docker
 ```
+- Run `docker-compose -f docker-compose.yml -f docker-compose.override.yml -f compose/docker-compose.venia.yml up -d`
 - Go to http://venia.docker in your browser to see initial setup   
 
 ## Useful Links

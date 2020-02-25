@@ -12,7 +12,7 @@ config/cli/mage2cli.env
 config/db/mage2db.env
 config/varnish/mage2varnish.env
 config/vsf/mage2vsf.env
-config/venia/mage2pwa.env
+config/venia/mage2venia.env
 config/elasticsearch/elasticsearch.yml
 config/kibana/kibana.yml
 config/varnish/default.vcl

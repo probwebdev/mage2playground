@@ -2,7 +2,7 @@
 set -e
 
 # Ensure Project directory exists
-mkdir -p ${PWA_STUDIO_ROOT}/app
+mkdir -p /home/node/app
 
 # Get current node user UID-GID
 CURRENT_UID="$(id -u node)"
@@ -14,7 +14,7 @@ CURRENT_GID="$(id -g node)"
 
 [[ ! -z "${PWA_STUDIO_GID}" && "${PWA_STUDIO_GID}" != "${CURRENT_GID}" ]] && \
     groupmod -g ${PWA_STUDIO_GID} node && \
-    find ${PWA_STUDIO_ROOT} -group ${CURRENT_GID} -exec chgrp -h node {} +
+    find /home/node -group ${CURRENT_GID} -exec chgrp -h node {} +
 
 su-exec node yarn run build || exit $?
 exec su-exec node "$@"

@@ -78,4 +78,4 @@ ENV DEBUG false
 
 ENTRYPOINT ["docker-entrypoint"]
 
-CMD ["bash"]
+CMD tail -f /dev/null

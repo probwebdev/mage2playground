@@ -8,17 +8,14 @@ composer.phar
 
 # Mage2playground
 .env
-docker/cli/mage2cli.env
-docker/db/mage2db.env
-docker/varnish/mage2varnish.env
-docker/vuestorefront/mage2vsf.env
-docker/pwa-studio/mage2pwa.env
-docker/elasticsearch/config/elasticsearch.yml
-docker/kibana/config/kibana.yml
-docker/varnish/config/default.vcl
-docker/nginx/config/mage2playground.conf
-docker/traefik/traefik.yml
-/mage2vsf
-/mage2vsf-api
-/mage2pwa
-/mage2
+config/cli/mage2cli.env
+config/db/mage2db.env
+config/varnish/mage2varnish.env
+config/vsf/mage2vsf.env
+config/venia/mage2venia.env
+config/elasticsearch/elasticsearch.yml
+config/kibana/kibana.yml
+config/varnish/default.vcl
+config/nginx/mage2playground.nginx
+config/traefik/traefik.yml
+project/*

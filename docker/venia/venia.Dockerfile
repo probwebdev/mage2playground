@@ -1,8 +1,8 @@
-ARG NODE_VER=12-alpine
+ARG NODE_VER=10-alpine
 
 FROM node:$NODE_VER
 
-ARG PWA_STUDIO_ROOT=/home/node
+WORKDIR /home/node
 
 RUN apk add --no-cache --virtual .runtime \
       shadow \
@@ -13,9 +13,10 @@ RUN apk add --no-cache --virtual .runtime \
 
 USER node
 
-RUN mkdir $PWA_STUDIO_ROOT/app
-WORKDIR $PWA_STUDIO_ROOT/app
+RUN mkdir /home/node/app
+WORKDIR /home/node/app
 
+COPY --chown=node:node packages/create-pwa/package.json ./packages/create-pwa/package.json
 COPY --chown=node:node packages/babel-preset-peregrine/package.json ./packages/babel-preset-peregrine/package.json
 COPY --chown=node:node packages/graphql-cli-validate-magento-pwa-queries/package.json ./packages/graphql-cli-validate-magento-pwa-queries/package.json
 COPY --chown=node:node packages/peregrine/package.json ./packages/peregrine/package.json
@@ -24,8 +25,9 @@ COPY --chown=node:node packages/upward-js/package.json ./packages/upward-js/pack
 COPY --chown=node:node packages/upward-spec/package.json ./packages/upward-spec/package.json
 COPY --chown=node:node packages/venia-ui/package.json ./packages/venia-ui/package.json
 COPY --chown=node:node packages/venia-concept/package.json ./packages/venia-concept/package.json
-COPY --chown=node:node scripts/monorepo-introduction.js ./scripts/monorepo-introduction.js
 COPY --chown=node:node package.json yarn.lock babel.config.js magento-compatibility.js ./
+COPY --chown=node:node scripts/monorepo-introduction.js ./scripts/monorepo-introduction.js
+COPY --chown=node:node lerna.json ./lerna.json
 
 RUN yarn install && yarn cache clean
 
@@ -39,6 +41,5 @@ RUN chmod +x /usr/local/bin/pwa-studio
 ENV DEV_SERVER_HOST localhost
 
 ENTRYPOINT ["pwa-studio"]
-EXPOSE 10000
 
 CMD yarn workspace @magento/venia-concept run watch -- --host ${DEV_SERVER_HOST}
